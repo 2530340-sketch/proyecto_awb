@@ -1,0 +1,94 @@
+        <html>
+        <head>
+            <title>Proyecto AW</title>
+            <link rel="stylesheet" href="style.css">
+            <body>
+            <main class="panel">
+            <h2>Nueva Actividad</h2>
+
+                <form id = "formulario">
+                <label for="titulo">Titulo</label>
+                <br>
+                <input type="text"
+                        name="titulo"
+                        placeholder="Ej. Proyecto de Aw"
+                        required>
+                        <br><br>
+
+
+                        <label for="materia">Materia</label>
+                        <br>
+                        <input type="text"
+                                name="materia"
+                                placeholder="Ej. Aplicaciones Web"
+                                required>
+                                <br><br>
+
+                                <label for="descripcion">Descripcion</label>
+                                <br>
+                                <textarea
+                                        name="descripcion"
+                                        placeholder="Ej. Descripción del proyecto"
+                                        required>
+                                </textarea>
+                                <br><br>
+
+                                <label for="fecha">Fecha de entrega</label>
+                                <br>
+                                <input type="date"
+                                        name="fecha"
+                                        required>
+                                        <br><br>
+
+                                        <select name = "Estatus">   
+                                            <option>pendiente</option>
+                                            <option>en progreso</option>
+                                            <option>completado</option>
+                                        </select>
+                                        
+
+                                        
+                                        <select name = "prioridad">   
+                                            <option>Baja</option>
+                                            <option>Media</option>
+                                            <option>Alta</option>
+                                        </select>
+
+                                     <button id="guardarNota" type="submit">
+                                            Guardar Nota
+                                        </button>
+
+
+                                        </form>
+
+
+                                            <form id="formulario2">
+                                                <label for="buscar">Buscar titulo o materia</label>
+                                                <input id="buscar" placeholder="Buscar" type="text"/>
+
+                                                <select name = "Estatus2">   
+                                            <option>pendiente</option>
+                                            <option>en progreso</option>
+                                            <option>completado</option>
+                                        </select>
+                                        
+
+                                        
+                                        <select name = "prioridad2">   
+                                            <option>Baja</option>
+                                            <option>Media</option>
+                                            <option>Alta</option>
+                                        </select>
+                                            </form>
+
+
+                               <div id="resultado"></div>
+
+
+
+                                
+
+                            
+            </body>
+            <script src="script.js"></script>
+        </html>

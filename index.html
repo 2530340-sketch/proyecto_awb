@@ -41,17 +41,17 @@
                                         <br><br>
 
                                         <select name = "Estatus">   
-                                            <option>pendiente</option>
-                                            <option>en progreso</option>
-                                            <option>completado</option>
+                                            <option value="pendiente">pendiente</option>
+                                            <option value="en progreso">en progreso</option>
+                                            <option value="completado">completado</option>
                                         </select>
                                         
 
                                         
                                         <select name = "prioridad">   
-                                            <option>Baja</option>
-                                            <option>Media</option>
-                                            <option>Alta</option>
+                                            <option value="Baja">Baja</option>
+                                            <option value="Media">Media</option>
+                                            <option value="Alta">Alta</option>
                                         </select>
 
                                      <button id="guardarNota" type="submit">
@@ -61,28 +61,31 @@
 
                                         </form>
 
+                                        <div id="resultado"></div>
+
+
 
                                             <form id="formulario2">
                                                 <label for="buscar">Buscar titulo o materia</label>
                                                 <input id="buscar" placeholder="Buscar" type="text"/>
 
                                                 <select name = "Estatus2">   
-                                            <option>pendiente</option>
-                                            <option>en progreso</option>
-                                            <option>completado</option>
+                                            <option value="pendiente">pendiente</option>
+                                            <option value="en progreso">en progreso</option>
+                                            <option value="completado">completado</option>
                                         </select>
                                         
 
                                         
                                         <select name = "prioridad2">   
-                                            <option>Baja</option>
-                                            <option>Media</option>
-                                            <option>Alta</option>
+                                            <option value="Baja">Baja</option>
+                                            <option value="Media">Media</option>
+                                            <option value="Alta">Alta</option>
                                         </select>
                                             </form>
 
 
-                               <div id="resultado"></div>
+                               <div id="resultado2"></div>
 
 
 
@@ -90,5 +93,5 @@
 
                             
             </body>
-            <script src="script.js"></script>
+            <script src="app.js"></script>
         </html>

@@ -159,11 +159,15 @@ body {
     font-size: 1.2rem;
     color: var(--primary-pink);
     margin-bottom: 2px;
+    overflow-wrap: anywhere;
+    max-width: 100%;
 }
 
 #resultado2 p {
     font-size: 0.9rem;
     color: #666;
+    overflow-wrap: anywhere;
+    max-width: 100%;
 }
 
 /* estilo de botones */

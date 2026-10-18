@@ -1,7 +1,7 @@
 let actividad = JSON.parse(localStorage.getItem("actividadesAcademicas")) || [];
 
 function guardar() {
-    localStorage.setItem("actividadesAcademicas", JSON.stringify(actividad));
+     localStorage.setItem("actividadesAcademicas", JSON.stringify(actividad));
 }
 
 document.querySelector("#formulario").addEventListener("submit", (evento) => {
@@ -9,76 +9,125 @@ document.querySelector("#formulario").addEventListener("submit", (evento) => {
 
     let datoss = new FormData(evento.target);
     let actividadA = Object.fromEntries(datoss);
-
+    actividadA.id = Date.now(); 
     actividad.push(actividadA);
     guardar();
     evento.target.reset();
     pintar();
 });
 
+// tomamos los elementos del formulario de busqueda
+const inputBuscar = document.querySelector("#buscar");
+const selectEstatus2 = document.querySelector('[name="Estatus2"]');
+const selectPrioridad2 = document.querySelector('[name="prioridad2"]');
+
+//escuchan los eventos para actualizar la vista en tiempo real
+inputBuscar.addEventListener("input", pintar);
+selectEstatus2.addEventListener("change", pintar);
+selectPrioridad2.addEventListener("change", pintar);
+
 function pintar() {
+    let totalPendientes = actividad.filter(a => a.Estatus === "pendiente").length;
+    let totalEnProgreso = actividad.filter(a => a.Estatus === "en progreso").length;
+    let totalCompletadas = actividad.filter(a => a.Estatus === "completado").length;
+
+    let divResultado = document.querySelector("#resultado");
+    divResultado.innerHTML = `
+        <div class="tarjeta-indicador">
+            <span class="titulo-indicador">Pendientes</span>
+            <span class="valor-indicador">${totalPendientes}</span>
+        </div>
+        <div class="tarjeta-indicador">
+            <span class="titulo-indicador">En Progreso</span>
+            <span class="valor-indicador">${totalEnProgreso}</span>
+        </div>
+        <div class="tarjeta-indicador">
+            <span class="titulo-indicador">Completadas</span>
+            <span class="valor-indicador">${totalCompletadas}</span>
+        </div>
+    `;
+
     let cont = document.querySelector("#resultado2");
     cont.replaceChildren();
-    //ordena la actividad de la mas nueva a la mas vieja 
-    [...actividad]
-    .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
-    .forEach((acts, indice) => {
-        
-        let tarjeta = document.createElement("div");
-        tarjeta.classList.add("nota-card");
 
-        let titulo = document.createElement("h2");
-        titulo.textContent = acts.titulo;
+    let textoBusqueda = inputBuscar.value.toLowerCase().trim();
+    let estatusFiltro = selectEstatus2.value;
+    let prioridadFiltro = selectPrioridad2.value;
 
-        let materia = document.createElement("p");
-        materia.textContent = "Materia: " + acts.materia;
-
-        let date = document.createElement("p");
-        date.textContent = "Fecha: " + acts.fecha;
-
-        let descripcion = document.createElement("p");
-        descripcion.textContent = "Descripción: " + acts.descripcion;
-
-        let prioridad = document.createElement("p");
-        prioridad.textContent = "Prioridad: " + acts.prioridad;
-
-        let estado = document.createElement("p");
-        estado.textContent = "Estado: " + acts.Estatus;
-
-        // contenedor de botones de accion eliminar y editar
-        let contenedorBotones = document.createElement("div");
-        contenedorBotones.classList.add("botones-tarjeta");
-        contenedorBotones.innerHTML = `<button class="btn-editar">Editar</button><button class="btn-eliminar">Eliminar</button>`;
-
-        // Logica del boton Editar
-        contenedorBotones.querySelector(".btn-editar").addEventListener("click", () => {
-            let nuevoTitulo = prompt("Edita el titulo de la actividad:", acts.titulo);
-            if (nuevoTitulo !== null && nuevoTitulo.trim() !== "") {
-                acts.titulo = nuevoTitulo.trim();
-                guardar();
-                pintar();
-            }
-        });
-
-        // Logica del boton Eliminar
-        contenedorBotones.querySelector(".btn-eliminar").addEventListener("click", () => {
-            actividad.splice(indice, 1);
-            guardar();
-            pintar();
-        });
-
-        // Agregamos todos los elementos dentro de la nota
-        tarjeta.append(titulo);
-        tarjeta.append(materia);
-        tarjeta.append(date);
-        tarjeta.append(descripcion);
-        tarjeta.append(prioridad);
-        tarjeta.append(estado);
-        tarjeta.append(contenedorBotones);
-
-        // Agrega la nota completa al contenedor principal
-        cont.append(tarjeta);
+    let actividadesFiltradas = actividad.filter(acts => {
+        let coincideTexto = acts.titulo.toLowerCase().includes(textoBusqueda) || 
+                            acts.materia.toLowerCase().includes(textoBusqueda);
+        let coincideEstatus = estatusFiltro === "" || acts.Estatus === estatusFiltro;
+        let coincidePrioridad = prioridadFiltro === "" || acts.prioridad === prioridadFiltro;
+        return coincideTexto && coincideEstatus && coincidePrioridad;
     });
+
+    [...actividadesFiltradas]
+    .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+    .forEach((acts) => {
+        
+        // indice real en el arreglo principal para eliminar o editar correctamente
+        let indiceReal = actividad.indexOf(acts);
+
+        let tarjeta = document.createElement("div");
+        tarjeta.classList.add("nota-card");
+
+        let titulo = document.createElement("h2");
+        titulo.textContent = acts.titulo;
+
+        let materia = document.createElement("p");
+        materia.textContent = "Materia: " + acts.materia;
+
+        let date = document.createElement("p");
+        date.textContent = "Fecha: " + acts.fecha;
+
+        let descripcion = document.createElement("p");
+        descripcion.textContent = "Descripción: " + acts.descripcion;
+
+        let prioridad = document.createElement("p");
+        prioridad.textContent = "Prioridad: " + acts.prioridad;
+
+        let estado = document.createElement("p");
+        estado.textContent = "Estado: " + acts.Estatus;
+
+        // Contenedor de botones de accion eliminar y editar
+        let contenedorBotones = document.createElement("div");
+        contenedorBotones.classList.add("botones-tarjeta");
+        contenedorBotones.innerHTML = `<button class="btn-editar">Editar</button><button class="btn-eliminar">Eliminar</button>`;
+
+        // Logica del boton Editar
+        contenedorBotones.querySelector(".btn-editar").addEventListener("click", () => {
+            let nuevoTitulo = prompt("Edita el titulo de la actividad:", acts.titulo);
+            if (nuevoTitulo !== null && nuevoTitulo.trim() !== "") {
+                acts.titulo = nuevoTitulo.trim();
+                guardar();
+                pintar();
+            }
+        });
+
+        // Loica del boton Eliminar usando el indice real
+        contenedorBotones.querySelector(".btn-eliminar").addEventListener("click", () => {
+            // busca exactamente el indice del elemento que tiene el mismo id
+            let indexReal = actividad.findIndex(item => item.id === acts.id);
+            if (indexReal !== -1) {
+                actividad.splice(indexReal, 1);
+                guardar();
+                pintar();
+            }
+        });
+
+        //  todos los elementos dentro de la tarjeta
+        tarjeta.append(titulo);
+        tarjeta.append(materia);
+        tarjeta.append(date);
+        tarjeta.append(descripcion);
+        tarjeta.append(prioridad);
+        tarjeta.append(estado);
+        tarjeta.append(contenedorBotones);
+
+        //  la nota completa al contenedor principal
+        cont.append(tarjeta);
+    });
 }
 
 pintar();

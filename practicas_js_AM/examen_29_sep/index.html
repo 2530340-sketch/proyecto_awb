@@ -1,0 +1,119 @@
+<html>
+<head>
+
+
+<title> Inscripcion a curso de programacion </title>
+
+
+</head>
+
+
+
+<body>
+
+    <h2>Inscrpcion a cursos</h2>
+
+
+    <form id="formulario">
+        <label for="nombre">
+            Nombre:
+        </label>
+
+        <input type="text"
+        id="nombre"
+        required>
+
+        <br><br>
+
+        <label for="correo">
+            Correo electronico:
+
+        </label>
+
+        <input type="text"
+        id="correo"
+        required>
+        <br><br>
+
+        <label for = "telefono">
+            Telefono:
+        </label>
+        <br><br>
+
+        <input type="number"
+        required>
+        <br><br>
+
+        <select id="curso">
+        <option value = "">Curso</option>
+        <option value="desarrollo web">Desarrollo web</option>
+        <option value="javaScript">javaScript</option>
+        <option value="BasesdeDatos">Base de datos</option>
+        </select>
+        <br><br>
+
+        <p>Modalidad: </p>
+
+        <label for="Presencial">
+            Presencial
+        </label>
+
+        <input type="checkbox"
+        id="presencial"
+        >
+
+        <label for="Linea">
+            Linea
+        </label>
+
+        <input type="checkbox"
+        id="linea"
+        >
+
+        <p>Cuentas con credencial?</p>
+
+        <label for = "si">
+            Si
+
+        </label>
+
+        <input type="radio"
+        name="decicion"
+        value="si"
+        required>
+
+        <label for = "no">
+            No
+
+        </label>
+
+        <input type="radio"
+        name="decicion"
+        value="no"
+        required>
+        <br><br>
+
+        <label for="Terminos">
+            Aceptas Terminos y condiciones
+        </label>
+
+        <input type="checkbox"
+        id="terminos"
+        required>
+        <br><br>
+
+        <button type="submit">subir</button>
+
+    </form>
+
+    <br><br>
+
+    <h2>Resultados</h2>
+
+    <div id="res" ></div>
+    <script src="app.js"></script>
+
+
+</body>
+
+</html>

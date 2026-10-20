@@ -1,0 +1,326 @@
+/* Estilos generales y paleta de colores */
+:root {
+    --primary-pink: #d81b60;
+    --light-pink: #f8bbd0;
+    --pale-pink: #fce4ec;
+    --text-color: #333333;
+    --bg-color: #faf6f8;
+    --white: #ffffff;
+    --gray-border: #e0e0e0;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 20px;
+}
+
+/* contenedor principal*/
+.panel {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    grid-template-rows: auto auto 1fr;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* formulario para guardar las tarjetas */
+#formulario {
+    grid-column: 1;
+    grid-row: 2 / span 2;
+    background: var(--white);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-top: 5px solid var(--primary-pink);
+}
+
+.panel > h2 {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 1.5rem;
+    color: var(--primary-pink);
+    align-self: center;
+    padding-left: 5px;
+}
+
+#formulario label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#formulario input[type="text"],
+#formulario textarea,
+#formulario input[type="date"],
+#formulario select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--gray-border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background-color: var(--pale-pink);
+    margin-bottom: 10px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#formulario input[type="text"]:focus,
+#formulario textarea:focus,
+#formulario input[type="date"]:focus,
+#formulario select:focus {
+    border-color: var(--primary-pink);
+}
+
+#formulario textarea {
+    resize: vertical;
+    height: 80px;
+}
+
+#guardarNota {
+    width: 100%;
+    background-color: var(--primary-pink);
+    color: var(--white);
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 5px;
+}
+
+#guardarNota:hover {
+    background-color: #c2185b;
+}
+
+/* formulario de busqueda y filtros (fila 1 de la columna derecha) */
+#formulario2 {
+    grid-column: 2;
+    grid-row: 1;
+    background: var(--white);
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#formulario2 label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+#formulario2 input[type="text"],
+#formulario2 select {
+    padding: 8px 12px;
+    border: 1px solid var(--gray-border);
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+/* contenedor de indicadores (fila 2 de la columna derecha) */
+#resultado {
+    grid-column: 2;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+/* tarjetas individuales de indicadores con la paleta de colores */
+.tarjeta-indicador {
+    background: var(--white);
+    padding: 12px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--gray-border);
+    border-top: 4px solid var(--primary-pink);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.tarjeta-indicador:hover {
+    transform: translateY(-2px);
+    background-color: var(--pale-pink);
+}
+
+.titulo-indicador {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.valor-indicador {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-pink);
+    margin-top: 2px;
+}
+
+/* contenedor de tarjetas de notas (fila 3 de la columna derecha) */
+#resultado2 {
+    grid-column: 2;
+    grid-row: 3;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+    align-content: start;
+}
+
+/* estilo para las tarjetas de notas generadas en el js */
+#resultado2 > div, 
+.nota-card {
+    background: var(--white);
+    padding: 18px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border-left: 4px solid var(--primary-pink);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#resultado2 > div:hover, 
+.nota-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+#resultado2 h2 {
+    font-size: 1.2rem;
+    color: var(--primary-pink);
+    margin-bottom: 2px;
+    overflow-wrap: anywhere;
+    max-width: 100%;
+}
+
+#resultado2 p {
+    font-size: 0.9rem;
+    color: #666;
+    overflow-wrap: anywhere;
+    max-width: 100%;
+}
+
+/* Estilo de botones */
+.botones-tarjeta {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.botones-tarjeta button {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-editar {
+    background-color: var(--pale-pink);
+    color: var(--primary-pink);
+    border: 1px solid var(--light-pink);
+}
+
+.btn-editar:hover {
+    background-color: var(--light-pink);
+}
+
+.btn-eliminar {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
+.btn-eliminar:hover {
+    background-color: #ffcdd2;
+}
+
+
+
+/* ======================================================== */
+/* NUEVO: ESTILOS PARA EL MENÚ SUPERIOR Y CONTROL DE VISTAS */
+/* ======================================================== */
+
+.seccion {
+    display: none; /* Oculto por defecto */
+}
+
+.seccion.active {
+    display: contents; /* Mantiene la estructura grid original cuando está activo */
+}
+
+/* Contenedor horizontal superior de las 8 prácticas */
+.contenedor-menu-practicas {
+    grid-column: 1 / -1; /* Ocupa todo el ancho superior */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* Tarjeta mini individual */
+.tarjeta-mini-practica {
+    background: var(--white);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    border-top: 3px solid var(--primary-pink);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.tarjeta-mini-practica h4 {
+    font-size: 0.85rem;
+    color: var(--primary-pink);
+    text-align: center;
+    font-weight: 700;
+}
+
+.botones-mini {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-mini {
+    flex: 1;
+    background-color: var(--pale-pink);
+    color: var(--primary-pink);
+    border: 1px solid var(--light-pink);
+    padding: 5px 2px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+
+.btn-mini:hover {
+    background-color: var(--light-pink);
+}

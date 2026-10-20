@@ -261,10 +261,6 @@ body {
 
 
 
-/* ======================================================== */
-/* NUEVO: ESTILOS PARA EL MENÚ SUPERIOR Y CONTROL DE VISTAS */
-/* ======================================================== */
-
 .seccion {
     display: none; /* Oculto por defecto */
 }
@@ -275,7 +271,7 @@ body {
 
 /* Contenedor horizontal superior de las 8 prácticas */
 .contenedor-menu-practicas {
-    grid-column: 1 / -1; /* Ocupa todo el ancho superior */
+    grid-column: 1 / -1;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 10px;

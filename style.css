@@ -22,7 +22,7 @@ body {
     padding: 20px;
 }
 
-/* Contenedor Principal (Organizado en 3 filas para la columna derecha) */
+/* contenedor principal*/
 .panel {
     display: grid;
     grid-template-columns: 350px 1fr;
@@ -32,7 +32,7 @@ body {
     margin: 0 auto;
 }
 
-/* Formulario para guardar las tarjetas */
+/* formulario para guardar las tarjetas */
 #formulario {
     grid-column: 1;
     grid-row: 2 / span 2;
@@ -105,7 +105,7 @@ body {
     background-color: #c2185b;
 }
 
-/* Formulario de búsqueda y filtros (Fila 1 de la columna derecha) */
+/* formulario de busqueda y filtros (fila 1 de la columna derecha) */
 #formulario2 {
     grid-column: 2;
     grid-row: 1;
@@ -133,7 +133,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* Contenedor de Indicadores (Fila 2 de la columna derecha - ¡Arriba de las tarjetas!) */
+/* contenedor de indicadores (fila 2 de la columna derecha) */
 #resultado {
     grid-column: 2;
     grid-row: 2;
@@ -142,7 +142,7 @@ body {
     gap: 15px;
 }
 
-/* Tarjetas individuales de indicadores con la paleta de colores */
+/* tarjetas individuales de indicadores con la paleta de colores */
 .tarjeta-indicador {
     background: var(--white);
     padding: 12px 15px;
@@ -177,7 +177,7 @@ body {
     margin-top: 2px;
 }
 
-/* Contenedor de tarjetas de notas (Fila 3 de la columna derecha) */
+/* contenedor de tarjetas de notas (fila 3 de la columna derecha) */
 #resultado2 {
     grid-column: 2;
     grid-row: 3;
@@ -187,7 +187,7 @@ body {
     align-content: start;
 }
 
-/* Estilo para las tarjetas de notas generadas en el js */
+/* estilo para las tarjetas de notas generadas en el js */
 #resultado2 > div, 
 .nota-card {
     background: var(--white);
@@ -257,4 +257,70 @@ body {
 
 .btn-eliminar:hover {
     background-color: #ffcdd2;
+}
+
+
+
+/* ======================================================== */
+/* NUEVO: ESTILOS PARA EL MENÚ SUPERIOR Y CONTROL DE VISTAS */
+/* ======================================================== */
+
+.seccion {
+    display: none; /* Oculto por defecto */
+}
+
+.seccion.active {
+    display: contents; /* Mantiene la estructura grid original cuando está activo */
+}
+
+/* Contenedor horizontal superior de las 8 prácticas */
+.contenedor-menu-practicas {
+    grid-column: 1 / -1; /* Ocupa todo el ancho superior */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* Tarjeta mini individual */
+.tarjeta-mini-practica {
+    background: var(--white);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    border-top: 3px solid var(--primary-pink);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.tarjeta-mini-practica h4 {
+    font-size: 0.85rem;
+    color: var(--primary-pink);
+    text-align: center;
+    font-weight: 700;
+}
+
+.botones-mini {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-mini {
+    flex: 1;
+    background-color: var(--pale-pink);
+    color: var(--primary-pink);
+    border: 1px solid var(--light-pink);
+    padding: 5px 2px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+
+.btn-mini:hover {
+    background-color: var(--light-pink);
 }

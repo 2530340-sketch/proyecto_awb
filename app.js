@@ -93,23 +93,68 @@ function pintar() {
         contenedorBotones.classList.add("botones-tarjeta");
         contenedorBotones.innerHTML = `<button class="btn-editar">Editar</button><button class="btn-eliminar">Eliminar</button>`;
 
+        // Botón Editar toda la información
         contenedorBotones.querySelector(".btn-editar").addEventListener("click", () => {
-            let nuevoTitulo = prompt("Edita el titulo de la actividad:", acts.titulo);
-            if (nuevoTitulo !== null && nuevoTitulo.trim() !== "") {
-                acts.titulo = nuevoTitulo.trim();
-                guardar();
-                pintar();
+            let nuevoTitulo = prompt("Edita el título:", acts.titulo);
+            if (nuevoTitulo === null) return;
+
+            let nuevaMateria = prompt("Edita la materia:", acts.materia);
+            if (nuevaMateria === null) return;
+
+            let nuevaDescripcion = prompt("Edita la descripción:", acts.descripcion);
+            if (nuevaDescripcion === null) return;
+
+            let nuevaFecha = prompt("Edita la fecha (AAAA-MM-DD):", acts.fecha);
+            if (nuevaFecha === null) return;
+
+            let nuevaPrioridad = prompt("Edita la prioridad (Baja, Media, Alta):", acts.prioridad);
+            if (nuevaPrioridad === null) return;
+
+            let nuevoEstatus = prompt("Edita el estado (pendiente, en progreso, completado):", acts.Estatus);
+            if (nuevoEstatus === null) return;
+
+            // Validar campos obligatorios vacíos
+            if (nuevoTitulo.trim() === "" || nuevaMateria.trim() === "" || nuevaFecha.trim() === "") {
+                alert("El título, la materia y la fecha son obligatorios y no pueden estar vacíos.");
+                return;
             }
+
+            // Validar prioridad
+            let prioridadLimpia = nuevaPrioridad.trim();
+            if (!["Baja", "Media", "Alta"].includes(prioridadLimpia)) {
+                alert("Prioridad no válida. Debe ser exactamente: Baja, Media o Alta.");
+                return;
+            }
+
+            // Validar estado
+            let estatusLimpio = nuevoEstatus.toLowerCase().trim();
+            if (!["pendiente", "en progreso", "completado"].includes(estatusLimpio)) {
+                alert("Estado no válido. Debe ser: pendiente, en progreso o completado.");
+                return;
+            }
+
+            // Actualizamos los datos del objeto conservando intacto su ID original (acts.id)
+            acts.titulo = nuevoTitulo.trim();
+            acts.materia = nuevaMateria.trim();
+            acts.descripcion = nuevaDescripcion.trim();
+            acts.fecha = nuevaFecha.trim();
+            acts.prioridad = prioridadLimpia;
+            acts.Estatus = estatusLimpio;
+
+            guardar();
+            pintar();
         });
 
-        contenedorBotones.querySelector(".btn-eliminar").addEventListener("click", () => {
+       contenedorBotones.querySelector(".btn-eliminar").addEventListener("click", () => {
+    if (confirm("¿Estás seguro de que deseas eliminar esta actividad?")) {
         let indexReal = actividad.findIndex(item => item.id === acts.id);
         if (indexReal !== -1) {
             actividad.splice(indexReal, 1);
             guardar();
             pintar();
         }
-    });
+    }
+});
 
     tarjeta.append(titulo);
     tarjeta.append(materia);
@@ -124,18 +169,3 @@ function pintar() {
 }
 
 pintar();
-
-
-// control de vistas
-function cambiarVista(nombreVista) {
-    //ocultar todas las secciones
-    document.querySelectorAll(".seccion").forEach(seccion => {
-        seccion.classList.remove("active");
-    });
-
-    // muestra la seccion seleccionada 
-    const vistaDestino = document.querySelector(`#${nombreVista}`);
-    if (vistaDestino) {
-        vistaDestino.classList.add("active");
-    }
-}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Práctica no. 6 - Preferencias de usuario</title>
+  <style>
+    :root {
+      font-family: system-ui, sans-serif;
+      color: #14213d;
+      background: #eef5ff;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      transition: background-color 0.3s, color 0.3s, font-size 0.3s;
+      background-color: #f4f4f9;
+      color: #333;
+      font-size: 16px;
+    }
+
+    .panel {
+      width: min(100%, 850px);
+      margin: auto;
+      padding: 30px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 16px 35px #14213d18;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .panel.tema-claro {
+      background: #ffffff;
+      color: #14213d;
+    }
+    .panel.tema-oscuro {
+      background: #1e1e1e;
+      color: #f4f4f9;
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .panel.fuente-pequena { font-size: 13px; }
+    .panel.fuente-normal { font-size: 16px; }
+    .panel.fuente-grande { font-size: 20px; }
+
+    .eyebrow {
+      color: #2563eb;
+      font-weight: 800;
+    }
+
+    form {
+      display: grid;
+      gap: 10px;
+      max-width: 600px;
+      margin-inline: auto;
+    }
+
+    input, textarea, select {
+      padding: 12px;
+      border: 1px solid #b9c9df;
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    .panel.tema-oscuro input, 
+    .panel.tema-oscuro select {
+      background-color: #2d2d2d;
+      color: #fff;
+      border: 1px solid #444;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    button {
+      color: #fff;
+      border: 0;
+      background: #2563eb;
+      cursor: pointer;
+      padding: 12px;
+      border-radius: 8px;
+      font: inherit;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #eliminar {
+      background: #2563eb;
+    }
+
+    #mensaje {
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="panel tema-claro fuente-normal">
+    <p class="eyebrow">Guardar preferencias de usuario</p>
+    <h1>Seleccione sus preferencias</h1>
+    
+    <form id="formulario">
+      <input type="text" name="nombre" placeholder="Nombre" required />
+      
+      <select name="tema" required>
+        <option value="claro">Claro</option>
+        <option value="oscuro">Oscuro</option>
+      </select>
+      
+      <select name="fuente" required>
+        <option value="pequena">Pequeña</option>
+        <option value="normal" selected>Normal</option>
+        <option value="grande">Grande</option>
+      </select>
+      
+      <button type="submit">Guardar Preferencias</button>
+      <button type="button" id="eliminar">Eliminar Preferencias</button>
+    </form>
+    
+    <section id="mensaje"></section>
+  </main>
+</body>
+</html>

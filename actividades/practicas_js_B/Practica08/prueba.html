@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestor de proyectos</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="panel">
+    
+    <!-- Navegación -->
+    <nav>
+      <button id="btnInicio" class="btn-nav">Inicio</button>
+      <button id="btnProyectos" class="btn-nav">Proyectos</button>
+      <button id="btnAjustes" class="btn-nav">Ajustes</button>
+    </nav>
+
+    <!-- Encabezado común -->
+    <header>
+      <p class="eyebrow">Previo a examen</p>
+      <h1>Gestor de proyectos</h1>
+    </header>
+
+    <!-- 1. SECCIÓN INICIO -->
+    <section id="inicio" class="seccion">
+      <h2>Resumen</h2>
+      <p><strong>Proyectos: <span id="contadorProyectos">0</span></strong></p>
+      <p>Aplicación de una sola página con estado persistente.</p>
+    </section>
+
+    <!-- 2. SECCIÓN PROYECTOS -->
+   <section id="proyectos" class="seccion">
+  <h2>Proyectos</h2>
+  <label for="nomProyectos">Nombre del proyecto:</label>
+  <input type="text" id="nomProyectos">
+  <button type="button" id="btnGuardarProyecto">Guardar</button>
+</section>
+
+    <!-- 3. SECCIÓN AJUSTES -->
+   <section id="ajustes" class="seccion">
+  <h2>Ajustes</h2>
+  <div id="listaProyectosAjustes"></div>
+</section>
+
+  </main>
+</body>
+</html>

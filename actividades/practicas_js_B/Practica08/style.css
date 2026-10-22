@@ -1,0 +1,94 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #14213d;
+  background: #eef5ff;
+}
+
+body {
+  margin: 0;
+  padding: 25px;
+}
+
+.panel {
+  width: min(100%, 1000px);
+  margin: auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 16px 35px #14213d18;
+}
+
+.eyebrow {
+  color: #2563eb;
+  font-weight: 800;
+}
+
+/* --- REGLAS CLAVE PARA LAS PANTALLAS (VISIBILIDAD) --- */
+.seccion {
+  display: none; /* Oculta todas las pantallas por defecto */
+}
+
+.seccion.active {
+  display: block; /* Muestra solo la pantalla activa */
+}
+
+/* --- MENÚ DE NAVEGACIÓN (NAV) --- */
+nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* --- BOTONES E INPUTS GENERALES --- */
+form, .form-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin-top: 15px;
+}
+
+input,
+select,
+button {
+  padding: 11px;
+  border: 1px solid #b9c9df;
+  border-radius: 8px;
+  font: inherit;
+}
+
+button {
+  color: #fff;
+  border: 0;
+  background: #2563eb;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+/* --- BOTÓN DE ELIMINAR (PANTALLA DE AJUSTES) --- */
+.btn-eliminar {
+  background: #d9534f;
+  margin-top: 8px;
+  padding: 8px 14px;
+}
+
+.btn-eliminar:hover {
+  background: #c9302c;
+}
+
+/* --- TARJETAS DE PROYECTOS (PANTALLA DE AJUSTES) --- */
+.tarjeta-proyecto {
+  margin: 12px 0;
+  padding: 14px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.tarjeta-proyecto p {
+  margin: 0 0 6px 0;
+}

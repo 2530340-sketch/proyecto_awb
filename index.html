@@ -8,18 +8,19 @@
 <body>
     <main class="panel">
 
-        <!-- menu superior para la Practica 5  -->
-        <div class="contenedor-menu-practicas" style="grid-column: 1 / -1;">
-            <div class="tarjeta-mini-practica">
-                <h4>Practica 05</h4>
-                <div class="botones-mini">
-                    <button class="btn-mini" onclick="cargarPractica5('alberto')">Alberto</button>
-                    <button class="btn-mini" onclick="cargarPractica5('aneth')">Aneth</button>
-                </div>
+        <!-- contenedor general ajustado para que todas las tarjetas midan lo mismo que la practica 05 -->
+        <div style="grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px;">
+
+        <!-- practica 05 -->
+        <div class="tarjeta-mini-practica">
+            <h4>Practica 05</h4>
+            <div class="botones-mini">
+                <button class="btn-mini" onclick="cargarPractica5('alberto')">Alberto</button>
+                <button class="btn-mini" onclick="cargarPractica5('aneth')">Aneth</button>
             </div>
         </div>
 
-        <!-- agregar dentro de contenedor-menu-practicas practica 06 -->
+        <!-- practica 06 -->
         <div class="tarjeta-mini-practica">
             <h4>Practica 06</h4>
             <div class="botones-mini">
@@ -28,7 +29,7 @@
             </div>
         </div>
 
-        <!-- agregar dentro de contenedor-menu-practicas -->
+        <!-- practica 07 -->
         <div class="tarjeta-mini-practica">
             <h4>Practica 07</h4>
             <div class="botones-mini">
@@ -37,8 +38,37 @@
             </div>
         </div>
 
-    <!-- contenedor donde aparecera la práctica seleccionada -->
-    <div id="contenedorPractica" style="grid-column: 1 / -1; margin-bottom: 20px;"></div>
+        <!-- practica 08 -->
+        <div class="tarjeta-mini-practica">
+            <h4>Práctica 08</h4>
+            <div class="botones-mini">
+                <button class="btn-mini" onclick="cargarPractica8('alberto')">Alberto</button>
+                <button class="btn-mini" onclick="cargarPractica8('aneth')">Aneth</button>
+            </div>
+        </div>
+
+        <!-- practica 09 -->
+        <div class="tarjeta-mini-practica">
+            <h4>Práctica 09</h4>
+            <div class="botones-mini">
+                <button class="btn-mini" onclick="cargarPractica9('alberto')">Alberto</button>
+                <button class="btn-mini" onclick="cargarPractica9('aneth')">Aneth</button>
+            </div>
+        </div>
+
+        <!-- practica 10 -->
+        <div class="tarjeta-mini-practica">
+            <h4>Practica 10</h4>
+            <div class="botones-mini">
+                <button class="btn-mini" onclick="cargarPractica10('alberto')">Alberto</button>
+                 <button class="btn-mini" onclick="cargarPractica10('aneth')">Aneth</button>
+            </div>
+        </div>
+
+        </div>
+
+        <!-- contenedor donde se cargara la practica seleccionada -->
+        <div id="contenedorPractica" style="grid-column: 1 / -1; margin-bottom: 20px;"></div>
 
 
 

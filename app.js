@@ -383,6 +383,664 @@ function iniciarLogicaP7(integrante) {
 }
 
 
+// -------------------------------------------------
+// logica para la practica 8 (gestor de proyectos)
+// -------------------------------------------------
+
+function cargarPractica8(integrante) {
+    const contenedorPrincipal = document.querySelector("#contenedorPractica");
+    if (!contenedorPrincipal) return;
+
+    if (integrante === 'alberto') {
+        // estructura html de la version de alberto
+        contenedorPrincipal.innerHTML = `
+            <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+                <header style="margin-bottom: 15px;">
+                    <p class="eyebrow" style="color: var(--primary-pink); font-weight: 800;">previo a examen</p>
+                    <h2>Gestor de proyectos - (ALBERTO)</h2>
+                    <nav id="nav-p8-alberto" style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button data-vista="inicio" class="btn-editar" style="cursor:pointer; padding:6px 12px; border-radius:4px;">Inicio</button>
+                        <button data-vista="proyectos" class="btn-editar" style="cursor:pointer; padding:6px 12px; border-radius:4px;">Proyectos</button>
+                        <button data-vista="ajustes" class="btn-editar" style="cursor:pointer; padding:6px 12px; border-radius:4px;">Ajustes</button>
+                    </nav>
+                </header>
+                <section id="app-p8-alberto" style="margin-top: 15px;"></section>
+            </div>
+        `;
+        iniciarLogicaP8Alberto();
+
+    } else if (integrante === 'aneth') {
+        // estructura html de la version de aneth
+        contenedorPrincipal.innerHTML = `
+            <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+                <header style="margin-bottom: 15px;">
+                    <p class="eyebrow" style="color: var(--primary-pink); font-weight: 800;">previo a examen</p>
+                    <h2>Gestor de proyectos - (ANETH)</h2>
+                    <nav style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button id="btnInicio-aneth" class="btn-editar" style="cursor:pointer; padding:6px 12px; border-radius:4px;">Inicio</button>
+                        <button id="btnProyectos-aneth" class="btn-editar" style="cursor:pointer; padding:6px 12px; border-radius:4px;">Proyectos</button>
+                        <button id="btnAjustes-aneth" class="btn-editar" style="cursor:pointer; padding:6px 12px; border-radius:4px;">Ajustes</button>
+                    </nav>
+                </header>
+
+                <!-- secciones controladas por dinamica de clases -->
+                <section id="inicio-aneth" class="seccion-p8" style="display:none; margin-top:15px;">
+                    <h3>Resumen</h3>
+                    <p><strong>Proyectos: <span id="contadorProyectos-aneth">0</span></strong></p>
+                    <p>Aplicación de una sola página con estado persistente.</p>
+                </section>
+
+                <section id="proyectos-aneth" class="seccion-p8" style="display:none; margin-top:15px;">
+                    <h3>Proyectos</h3>
+                    <div style="display:flex; flex-direction:column; gap:10px; max-width:400px;">
+                        <label for="nomProyectos-aneth">Nombre del proyecto:</label>
+                        <input type="text" id="nomProyectos-aneth" style="padding:8px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                        <button type="button" id="btnGuardarProyecto-aneth" class="btn-editar" style="padding:10px; font-weight:bold; cursor:pointer;">Guardar</button>
+                    </div>
+                </section>
+
+                <section id="ajustes-aneth" class="seccion-p8" style="display:none; margin-top:15px;">
+                    <h3>Ajustes / Lista de Proyectos</h3>
+                    <div id="listaProyectosAjustes-aneth" style="display:grid; gap:10px; margin-top:10px;"></div>
+                </section>
+            </div>
+        `;
+        iniciarLogicaP8Aneth();
+    }
+}
+
+// --- logica de alberto adaptada ---
+function iniciarLogicaP8Alberto() {
+    let proyectos = [];
+    let vistaActiva = "inicio";
+    const contenedor = document.querySelector("#app-p8-alberto");
+    const claveStorage = "aplicacionProyectos_alberto";
+
+    try {
+        let datosGuardados = localStorage.getItem(claveStorage);
+        if (datosGuardados) {
+            let datos = JSON.parse(datosGuardados);
+            proyectos = Array.isArray(datos.proyectos) ? datos.proyectos : [];
+            vistaActiva = datos.vistaActiva || "inicio";
+        }
+    } catch (error) {
+        proyectos = [];
+        vistaActiva = "inicio";
+    }
+
+    function guardar() {
+        let datos = { proyectos: proyectos, vistaActiva: vistaActiva };
+        localStorage.setItem(claveStorage, JSON.stringify(datos));
+    }
+
+    function cambiarVista(vista) {
+        vistaActiva = vista;
+        guardar();
+        pintar();
+    }
+
+    function pintar() {
+        if (!contenedor) return;
+        contenedor.replaceChildren();
+
+        if (vistaActiva === "inicio") {
+            let titulo = document.createElement("h3");
+            let subtitulo = document.createElement("h4");
+            let resumen = document.createElement("p");
+
+            titulo.textContent = "Inicio";
+            subtitulo.textContent = "Resumen";
+            resumen.textContent = `Proyectos guardados: ${proyectos.length}`;
+
+            contenedor.append(titulo, subtitulo, resumen);
+
+        } else if (vistaActiva === "proyectos") {
+            let titulo = document.createElement("h3");
+            let texto = document.createElement("p");
+            let inputNombre = document.createElement("input");
+            let inputDescripcion = document.createElement("textarea");
+            let selectEstado = document.createElement("select");
+            let botonAgregar = document.createElement("button");
+            let lista = document.createElement("div");
+
+            titulo.textContent = "Proyectos";
+            texto.textContent = "Agregar un nuevo proyecto:";
+
+            inputNombre.type = "text";
+            inputNombre.placeholder = "Nombre del proyecto";
+            inputNombre.style.cssText = "padding:8px; margin-bottom:8px; width:100%; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);";
+
+            inputDescripcion.placeholder = "Descripción del proyecto";
+            inputDescripcion.style.cssText = "padding:8px; margin-bottom:8px; width:100%; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);";
+
+            selectEstado.style.cssText = "padding:8px; margin-bottom:8px; width:100%; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);";
+            ["Pendiente", "En proceso", "Terminado"].forEach((estado) => {
+                let opcion = document.createElement("option");
+                opcion.value = estado;
+                opcion.textContent = estado;
+                selectEstado.append(opcion);
+            });
+
+            botonAgregar.textContent = "Agregar proyecto";
+            botonAgregar.type = "button";
+            botonAgregar.className = "btn-editar";
+            botonAgregar.style.cssText = "padding:10px; font-weight:bold; cursor:pointer; width:100%;";
+
+            botonAgregar.addEventListener("click", () => {
+                let nombre = inputNombre.value.trim();
+                let descripcion = inputDescripcion.value.trim();
+                let estado = selectEstado.value;
+
+                if (nombre === "") {
+                    alert("Escribe el nombre del proyecto.");
+                    return;
+                }
+
+                proyectos.push({ nombre, descripcion, estado });
+                guardar();
+                pintar();
+            });
+
+            proyectos.forEach((proyecto) => {
+                let tarjeta = document.createElement("article");
+                tarjeta.className = "nota-card";
+                let nombreProyecto = document.createElement("h4");
+                let descripcionProyecto = document.createElement("p");
+                let estadoProyecto = document.createElement("p");
+                let cambiarEstado = document.createElement("select");
+                let borrar = document.createElement("button");
+
+                nombreProyecto.textContent = proyecto.nombre;
+                descripcionProyecto.textContent = proyecto.descripcion || "Sin descripción";
+                estadoProyecto.textContent = "Estado: " + (proyecto.estado || "Pendiente");
+
+                ["Pendiente", "En proceso", "Terminado"].forEach((estado) => {
+                    let opcion = document.createElement("option");
+                    opcion.value = estado;
+                    opcion.textContent = estado;
+                    if ((proyecto.estado || "Pendiente") === estado) opcion.selected = true;
+                    cambiarEstado.append(opcion);
+                });
+
+                cambiarEstado.addEventListener("change", () => {
+                    proyecto.estado = cambiarEstado.value;
+                    guardar();
+                    pintar();
+                });
+
+                borrar.textContent = "Eliminar";
+                borrar.type = "button";
+                borrar.className = "btn-eliminar";
+                borrar.style.marginTop = "8px";
+
+                borrar.addEventListener("click", () => {
+                    proyectos.splice(proyectos.indexOf(proyecto), 1);
+                    guardar();
+                    pintar();
+                });
+
+                tarjeta.append(nombreProyecto, descripcionProyecto, estadoProyecto, cambiarEstado, borrar);
+                lista.append(tarjeta);
+            });
+
+            contenedor.append(titulo, texto, inputNombre, inputDescripcion, selectEstado, botonAgregar, lista);
+
+        } else if (vistaActiva === "ajustes") {
+            let titulo = document.createElement("h3");
+            let texto = document.createElement("p");
+            let botonLimpiar = document.createElement("button");
+
+            titulo.textContent = "Ajustes";
+            texto.textContent = "Los datos se almacenan en localStorage.";
+            botonLimpiar.textContent = "Limpiar todos los proyectos";
+            botonLimpiar.type = "button";
+            botonLimpiar.className = "btn-eliminar";
+            botonLimpiar.style.marginTop = "10px";
+
+            botonLimpiar.addEventListener("click", () => {
+                if (confirm("¿Deseas eliminar todos los proyectos?")) {
+                    proyectos = [];
+                    guardar();
+                    pintar();
+                }
+            });
+
+            contenedor.append(titulo, texto, botonLimpiar);
+        }
+    }
+
+    document.querySelectorAll("#nav-p8-alberto button[data-vista]").forEach((boton) => {
+        boton.addEventListener("click", () => {
+            cambiarVista(boton.dataset.vista);
+        });
+    });
+
+    if (!["inicio", "proyectos", "ajustes"].includes(vistaActiva)) {
+        vistaActiva = "inicio";
+    }
+
+    pintar();
+}
+
+// --- logica de aneth adaptada ---
+function iniciarLogicaP8Aneth() {
+    const claveStorage = "aplicacionProyectos_aneth";
+
+    const btnInicio = document.querySelector('#btnInicio-aneth');
+    const btnProyectos = document.querySelector('#btnProyectos-aneth');
+    const btnAjustes = document.querySelector('#btnAjustes-aneth');
+
+    const pantallaInicio = document.querySelector("#inicio-aneth");
+    const pantallaProyectos = document.querySelector("#proyectos-aneth");
+    const pantallaAjustes = document.querySelector("#ajustes-aneth");
+
+    const inputNomProyecto = document.querySelector('#nomProyectos-aneth');
+    const btnGuardarProyecto = document.querySelector('#btnGuardarProyecto-aneth');
+    const contadorProyectos = document.querySelector('#contadorProyectos-aneth');
+    const listaProyectosAjustes = document.querySelector('#listaProyectosAjustes-aneth');
+
+    let estado = JSON.parse(localStorage.getItem(claveStorage)) || {
+        vista: "inicio",
+        listaProyectos: []
+    };
+
+    if (!Array.isArray(estado.listaProyectos)) {
+        estado.listaProyectos = [];
+    }
+
+    function guardar() {
+        localStorage.setItem(claveStorage, JSON.stringify(estado));
+    }
+
+    function ocultarTodas() {
+        if (pantallaInicio) pantallaInicio.style.display = 'none';
+        if (pantallaProyectos) pantallaProyectos.style.display = 'none';
+        if (pantallaAjustes) pantallaAjustes.style.display = 'none';
+    }
+
+    function cambiarVista(nombreVista) {
+        estado.vista = nombreVista;
+        guardar();
+        ocultarTodas();
+
+        if (nombreVista === 'inicio' && pantallaInicio) {
+            pantallaInicio.style.display = 'block';
+        } else if (nombreVista === 'proyectos' && pantallaProyectos) {
+            pantallaProyectos.style.display = 'block';
+        } else if (nombreVista === 'ajustes' && pantallaAjustes) {
+            pantallaAjustes.style.display = 'block';
+        }
+
+        renderizar();
+    }
+
+    function renderizar() {
+        if (contadorProyectos) {
+            contadorProyectos.textContent = estado.listaProyectos.length;
+        }
+
+        if (listaProyectosAjustes) {
+            listaProyectosAjustes.innerHTML = '';
+
+            if (estado.listaProyectos.length === 0) {
+                listaProyectosAjustes.innerHTML = '<p>No hay proyectos guardados.</p>';
+            } else {
+                estado.listaProyectos.forEach((proyecto, index) => {
+                    const tarjeta = document.createElement('div');
+                    tarjeta.className = 'nota-card';
+
+                    tarjeta.innerHTML = `
+                        <p><strong>${proyecto}</strong></p>
+                        <button type="button" class="btn-eliminar" data-index="${index}" style="margin-top:6px; padding:6px 10px; cursor:pointer;">Eliminar</button>
+                    `;
+
+                    listaProyectosAjustes.appendChild(tarjeta);
+                });
+
+                const botonesEliminar = listaProyectosAjustes.querySelectorAll('.btn-eliminar');
+                botonesEliminar.forEach(boton => {
+                    boton.addEventListener('click', (e) => {
+                        const idx = e.target.getAttribute('data-index');
+                        eliminarProyecto(idx);
+                    });
+                });
+            }
+        }
+    }
+
+    function eliminarProyecto(index) {
+        estado.listaProyectos.splice(index, 1);
+        guardar();
+        renderizar();
+    }
+
+    if (btnGuardarProyecto) {
+        btnGuardarProyecto.addEventListener('click', () => {
+            const nombre = inputNomProyecto.value.trim();
+
+            if (nombre !== "") {
+                estado.listaProyectos.push(nombre);
+                guardar();
+                inputNomProyecto.value = "";
+                alert("¡Proyecto guardado!");
+                renderizar();
+            } else {
+                alert("Por favor escribe un nombre para el proyecto.");
+            }
+        });
+    }
+
+    if (btnInicio) btnInicio.addEventListener('click', () => cambiarVista('inicio'));
+    if (btnProyectos) btnProyectos.addEventListener('click', () => cambiarVista('proyectos'));
+    if (btnAjustes) btnAjustes.addEventListener('click', () => cambiarVista('ajustes'));
+
+    cambiarVista(estado.vista);
+}
+
+
+
+// ------------------------------------
+// logica para la practica 9 (nomina)
+// ------------------------------------
+
+function cargarPractica9(integrante) {
+    const contenedorPrincipal = document.querySelector("#contenedorPractica");
+    if (!contenedorPrincipal) return;
+
+    if (integrante === 'alberto') {
+        // estructura html de la version de alberto
+        contenedorPrincipal.innerHTML = `
+            <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+                <h2 style="text-align:center;">Nomina - (ALBERTO)</h2>
+                <form id="formularioNomina-alberto" style="max-width:100%; margin:0 auto; background:transparent; box-shadow:none; border:none; padding:0;">
+                    <label style="font-weight:600; display:block; margin-bottom:6px;">Nombre:</label>
+                    <input type="text" id="NombreEmpleado-alberto" required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                    
+                    <label style="font-weight:600; display:block; margin-bottom:6px;">Horas:</label>
+                    <input type="number" id="horasTrabajadas-alberto" required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                    
+                    <label style="font-weight:600; display:block; margin-bottom:6px;">Pago por hora:</label>
+                    <input type="number" id="pagoHora-alberto" required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                    
+                    <div style="display:flex; gap:10px;">
+                        <button type="submit" class="btn-editar" style="flex:1; padding:10px; font-weight:bold; cursor:pointer;">Mostrar calculo</button>
+                    </div>
+                </form>
+                <hr style="margin:20px 0; border:0; border-top:1px solid var(--gray-border);">
+                <h3>Resultado:</h3>
+                <div id="resultado-alberto" style="padding:12px; background:var(--pale-pink); border-radius:8px; border:1px solid var(--gray-border);"></div>
+            </div>
+        `;
+        iniciarLogicaP9Alberto();
+
+    } else if (integrante === 'aneth') {
+        // estructura html de la version de aneth
+        contenedorPrincipal.innerHTML = `
+            <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+                <h2 style="text-align:center;">Cálculo de Pago de Nómina - (ANETH)</h2>
+                <form id="formulario-pago-aneth" style="max-width:100%; margin:0 auto; background:transparent; box-shadow:none; border:none; padding:0;">
+                    <label style="font-weight:600; display:block; margin-top:10px; margin-bottom:6px;">Nombre del empleado:</label>
+                    <input type="text" id="empleado-aneth" required placeholder="Ej. Mario Zapata" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                    <label style="font-weight:600; display:block; margin-top:10px; margin-bottom:6px;">Total de horas trabajadas:</label>
+                    <input type="number" id="horas-aneth" step="1" min="1" required placeholder="0" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                    <label style="font-weight:600; display:block; margin-top:10px; margin-bottom:6px;">Pago por una hora trabajada ($):</label>
+                    <input type="number" id="pago_hora-aneth" step="10" min="0" required placeholder="0" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                    <button type="submit" class="btn-editar" style="width:100%; padding:10px; font-weight:bold; cursor:pointer; margin-top:10px;">Calcular</button>
+                </form>
+                <hr style="margin:20px 0; border:0; border-top:1px solid var(--gray-border);">
+                <div id="resultado-aneth" style="padding:12px; background:var(--pale-pink); border-radius:8px; border:1px solid var(--gray-border);">Esperando datos...</div>
+            </div>
+        `;
+        iniciarLogicaP9Aneth();
+    }
+}
+
+// --- logica de alberto adaptada ---
+function iniciarLogicaP9Alberto() {
+    let nomina = JSON.parse(localStorage.getItem('nominaClientes_alberto')) || [];
+    const formulario = document.querySelector("#formularioNomina-alberto");
+    const resultado = document.querySelector("#resultado-alberto");
+
+    function guardar() {
+        localStorage.setItem('nominaClientes_alberto', JSON.stringify(nomina));
+    }
+
+    formulario.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const nombre = document.querySelector("#NombreEmpleado-alberto").value;
+        const horas = Number(document.querySelector("#horasTrabajadas-alberto").value);
+        const pago = Number(document.querySelector("#pagoHora-alberto").value);
+
+        let extra = 0;
+        let pagototal = 0;
+        let total = 0;
+
+        if (horas > 40) {
+            pagototal = pago * 40;
+            extra = horas - 40;
+            let mas = pago * 1.5;
+            let sum = mas * extra;
+            total = pagototal + sum;
+        } else {
+            pagototal = pago * horas;
+            total = pagototal;
+        }
+
+        const empleado = {
+            nombre: nombre,
+            horas: horas,
+            horasExtra: extra,
+            pagoTotal: total
+        };
+
+        nomina.push(empleado);
+        guardar();
+
+        resultado.innerHTML = `
+            <p><strong>Nombre: </strong>${nombre}</p>
+            <p><strong>Horas Trabajadas: </strong>${horas}</p>
+            <p><strong>Horas extra: </strong>${extra}</p>
+            <p><strong>Pago total: </strong>$${total}</p>
+        `;
+    });
+}
+
+// --- logica de aneth adaptada ---
+function iniciarLogicaP9Aneth() {
+    const formulario = document.querySelector('#formulario-pago-aneth');
+    const contenedorResultado = document.querySelector('#resultado-aneth');
+    const campoEmpleado = document.querySelector('#empleado-aneth');
+    const campoHoras = document.querySelector('#horas-aneth');
+    const campoPagoHora = document.querySelector('#pago_hora-aneth');
+    const clavePago = 'practica9.nomina_aneth';
+
+    function calcularPago(horas, pagoHora) {
+        const horasNormales = Math.min(horas, 40);
+        const horasExtra = Math.max(horas - 40, 0);
+        return horasNormales * pagoHora + horasExtra * pagoHora * 1.5;
+    }
+
+    function mostrarResultado(empleado, horas, pagoTotal) {
+        contenedorResultado.replaceChildren();
+
+        const datos = [
+            ['Empleado', empleado],
+            ['Horas', horas],
+            ['Total a pagar', `$${pagoTotal.toFixed(2)}`]
+        ];
+
+        datos.forEach(([etiqueta, valor]) => {
+            const linea = document.createElement('p');
+            const nombreCampo = document.createElement('strong');
+            nombreCampo.textContent = `${etiqueta}: `;
+            linea.append(nombreCampo, document.createTextNode(valor));
+            contenedorResultado.append(linea);
+        });
+    }
+
+    function cargarDatosGuardados() {
+        try {
+            const guardados = localStorage.getItem(clavePago);
+            if (!guardados) return;
+
+            const datos = JSON.parse(guardados);
+            if (
+                typeof datos.empleado !== 'string' ||
+                !Number.isFinite(datos.horas) ||
+                !Number.isFinite(datos.pagoHora)
+            ) return;
+
+            campoEmpleado.value = datos.empleado;
+            campoHoras.value = datos.horas;
+            campoPagoHora.value = datos.pagoHora;
+            mostrarResultado(datos.empleado, datos.horas, calcularPago(datos.horas, datos.pagoHora));
+        } catch {
+            contenedorResultado.textContent = 'No se pudieron recuperar los datos guardados.';
+        }
+    }
+
+    formulario.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const empleado = campoEmpleado.value.trim();
+        const horas = Number(campoHoras.value);
+        const pagoHora = Number(campoPagoHora.value);
+        const pagoTotal = calcularPago(horas, pagoHora);
+
+        try {
+            localStorage.setItem(clavePago, JSON.stringify({ empleado, horas, pagoHora }));
+        } catch {
+            contenedorResultado.textContent = 'No se pudieron guardar los datos en este navegador.';
+            return;
+        }
+
+        mostrarResultado(empleado, horas, pagoTotal);
+    });
+
+    cargarDatosGuardados();
+}
+
+// ==========================================
+// logica para la practica 10 (formulario completo)
+// ==========================================
+
+function cargarPractica10(integrante) {
+    const contenedorPrincipal = document.querySelector("#contenedorPractica");
+    if (!contenedorPrincipal) return;
+
+    // inyectamos la estructura html real de la practica 10
+    contenedorPrincipal.innerHTML = `
+        <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+            <h1 style="font-size: 1.4rem; text-align: center; margin-bottom: 15px;">Ejercicio 3. Calculo de Nomina / Registro - (${integrante.toUpperCase()})</h1>
+
+            <form id="formEncuesta-${integrante}" style="max-width: 100%; margin: 0 auto; background: transparent; box-shadow: none; border: none; padding: 0;">
+                <label for="nombre-${integrante}" style="display:block; margin-bottom:6px; font-weight:600;">Nombre del Alumno:</label>
+                <input type="text" id="nombre-${integrante}" name="nombre" required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                <label for="horas-${integrante}" style="display:block; margin-bottom:6px; font-weight:600;">Grupo / Horas:</label>
+                <input type="number" id="horas-${integrante}" name="horas" step="0.01" min="0" required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                <label for="carrera-${integrante}" style="display:block; margin-bottom:6px; font-weight:600;">Carrera:</label>
+                <select id="carrera-${integrante}" name="carrera" required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                    <option value="">-- Selecciona --</option>
+                    <option value="ITI">Ing. en Tecnologias de la Informacion</option>
+                    <option value="ISC">Ing. en Sistemas Computacionales</option>
+                    <option value="IIND">Ing. Industrial</option>
+                    <option value="IBIO">Ing. Biomedica</option>
+                </select>
+
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Opcion:</label>
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <label><input type="radio" name="opcionRadio" value="1" required> 1</label>
+                        <label><input type="radio" name="opcionRadio" value="2"> 2</label>
+                        <label><input type="radio" name="opcionRadio" value="3"> 3</label>
+                        <label><input type="radio" name="opcionRadio" value="4"> 4</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-editar" style="width:100%; padding:10px; font-weight:bold; cursor:pointer;">Calcular / Guardar</button>
+            </form>
+
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--gray-border);">
+            <h2 style="font-size: 1.2rem; text-align: center;">Resultado</h2>
+            <div id="resultado-${integrante}" style="padding: 12px; background: var(--pale-pink); border-radius: 8px; border: 1px solid var(--gray-border);"></div>
+        </div>
+    `;
+
+    // iniciamos la logica adaptada para el integrante
+    iniciarLogicaP10Real(integrante);
+}
+
+function iniciarLogicaP10Real(integrante) {
+    const claveStorage = `ejercicioNominaCurso_${integrante}`;
+    const formulario = document.querySelector(`#formEncuesta-${integrante}`);
+    const resultado = document.querySelector(`#resultado-${integrante}`);
+
+    // agrega una linea con etiqueta y valor al resultado
+    function agregarLinea(etiqueta, valor) {
+        const parrafo = document.createElement("p");
+        const fuerte = document.createElement("strong");
+
+        fuerte.textContent = etiqueta + ": ";
+        parrafo.append(fuerte, valor);
+        resultado.append(parrafo);
+    }
+
+    // muestra cada valor capturado
+    function mostrarResultado(datos) {
+        resultado.replaceChildren();
+        agregarLinea("Nombre", datos.nombre);
+        agregarLinea("Grupo / Horas", datos.horas);
+        agregarLinea("Carrera", datos.carrera);
+        agregarLinea("Opcion", datos.opcionRadio);
+    }
+
+    // carga los datos guardados en localstorage
+    function cargar() {
+        const guardada = localStorage.getItem(claveStorage);
+        if (!guardada) {
+            return;
+        }
+        const datos = JSON.parse(guardada);
+        Object.entries(datos).forEach(([campo, valor]) => {
+            if (formulario.elements[campo]) {
+                if (formulario.elements[campo].type === "radio") {
+                    const radio = formulario.querySelector(`input[name="${campo}"][value="${valor}"]`);
+                    if (radio) radio.checked = true;
+                } else {
+                    formulario.elements[campo].value = valor;
+                }
+            }
+        });
+        mostrarResultado(datos);
+    }
+
+    formulario.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const datos = Object.fromEntries(new FormData(formulario));
+        datos.nombre = datos.nombre ? datos.nombre.trim() : "";
+        datos.horas = datos.horas ? datos.horas.trim() : "";
+        datos.carrera = datos.carrera ? datos.carrera.trim() : "";
+
+        // guarda en localstorage y muestra en pantalla
+        localStorage.setItem(claveStorage, JSON.stringify(datos));
+        mostrarResultado(datos);
+    });
+
+    cargar();
+}
+
+
+
+
+
+
 
 
 

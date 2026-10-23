@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscripción a curso de programación</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h2>Inscripción a cursos</h2>
+
+    <form id="formulario">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre">
+        <span id="error-nombre" class="error"></span>
+        <br><br>
+
+        <label for="correo">Correo electrónico:</label>
+        <input type="text" id="correo">
+        <span id="error-correo" class="error"></span>
+        <br><br>
+
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" maxlength="10">
+        <span id="error-telefono" class="error"></span>
+        <br><br>
+
+        <label for="curso">Curso:</label>
+        <select id="curso">
+            <option value="">Curso</option>
+            <option value="Desarrollo Web">Desarrollo Web</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="Bases de Datos">Bases de Datos</option>
+        </select>
+        <span id="error-curso" class="error"></span>
+        <br><br>
+
+        <p>Modalidad:</p>
+        <label><input type="checkbox" id="presencial"> Presencial</label>
+        <label><input type="checkbox" id="linea"> Línea</label>
+        <br>
+        <span id="error-modalidad" class="error"></span>
+        <br>
+
+        <p>¿Cuentas con credencial?</p>
+        <label><input type="radio" name="credencial" value="si"> Sí</label>
+        <label><input type="radio" name="credencial" value="no" checked> No</label>
+        <br><br>
+
+        <label>
+            <input type="checkbox" id="terminos"> Aceptas Términos y condiciones
+        </label>
+        <span id="error-terminos" class="error"></span>
+        <br><br>
+
+        <button type="submit">Subir</button>
+        <button type="button" id="btn-limpiar" style="background-color: #ccc; color: #333; margin-left: 10px;">Limpiar</button>
+    </form>
+
+    <br><br>
+    <h2>Resultados</h2>
+    <div id="res"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

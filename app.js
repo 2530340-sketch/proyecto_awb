@@ -6,6 +6,316 @@ function guardar() {
 
 
 
+// ==========================================
+// logica para la practica 03 (agenda de contactos)
+// ==========================================
+
+function cargarPractica3(integrante) {
+    const contenedorPrincipal = document.querySelector("#contenedorPractica");
+    if (!contenedorPrincipal) return;
+
+    if (integrante === 'alberto') {
+        // estructura html adaptada para alberto (practica 3)
+        contenedorPrincipal.innerHTML = `
+            <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+                <p class="eyebrow" style="color: var(--primary-pink); font-weight: 800;">ejercicio agenda</p>
+                <h1 style="font-size: 1.4rem; text-align: center; margin-bottom: 15px;">Agenda UPV - (ALBERTO)</h1>
+
+                <form id="formulario-alberto" style="max-width: 100%; margin: 0 auto; background: transparent; box-shadow: none; border: none; padding: 0;">
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Nombre:</label>
+                    <input type="text" name="nombre" placeholder="Nombre" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);" />
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Telefono:</label>
+                    <input type="tel" name="telefono" maxlength="10" required placeholder="Telefono de 10 digitos" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);"/>
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Correo:</label>
+                    <input name="correo" type="email" placeholder="Correo" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);" />
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Categoria:</label>
+                    <select name="categoria" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                        <option>Familia</option>
+                        <option>Amigos</option>
+                        <option>Trabajo</option>
+                    </select>
+                    
+                    <button type="submit" class="btn-editar" style="width:100%; padding:10px; font-weight:bold; cursor:pointer;">Guardar contacto</button>
+                </form>
+
+                <br>
+                <label style="display:block; margin-bottom:6px; font-weight:600;">Buscar contacto:</label>
+                <input id="buscar-alberto" placeholder="Buscar contacto" type="text" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);"/>
+                
+                <section id="lista-alberto" style="display: grid; gap: 10px;"></section>
+            </div>
+        `;
+        iniciarLogicaP3Alberto();
+
+    } else if (integrante === 'aneth') {
+        // estructura html adaptada para aneth (practica 3)
+        contenedorPrincipal.innerHTML = `
+            <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+                <p class="eyebrow" style="color: var(--primary-pink); font-weight: 800;">ejercicio agenda</p>
+                <h1 style="font-size: 1.4rem; text-align: center; margin-bottom: 15px;">Agenda UPV - (ANETH)</h1>
+
+                <form id="formulario-aneth" style="max-width: 100%; margin: 0 auto; background: transparent; box-shadow: none; border: none; padding: 0;">
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Nombre</label>
+                    <input id="nombre-aneth" name="nombre" type="text" placeholder="Ingresa un nombre" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Teléfono</label>
+                    <input id="telefono-aneth" name="telefono" type="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="Ingrese su telefono" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Correo electrónico</label>
+                    <input id="correo-aneth" name="correo" type="email" placeholder="nombre@ejemplo.com" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Categoría</label>
+                    <select id="categoria-aneth" name="categoria" required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                        <option value="">Selecciona una categoría</option>
+                        <option value="Familia">Familia</option>
+                        <option value="Amigos">Amigos</option>
+                        <option value="Deporte">Deporte</option>
+                        <option value="Baile">Baile</option>
+                    </select>
+
+                    <button type="submit" class="btn-editar" style="width:100%; padding:10px; font-weight:bold; cursor:pointer;">Guardar contacto</button>
+                </form>
+
+                <br>
+                <label style="display:block; margin-bottom:6px; font-weight:600;">Buscar contacto</label>
+                <input id="buscar-aneth" name="buscar" type="search" placeholder="Escribe un nombre" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                
+                <section id="lista-aneth" aria-live="polite" aria-label="Contactos" style="display: grid; gap: 10px;"></section>
+            </div>
+        `;
+        iniciarLogicaP3Aneth();
+    }
+}
+
+// --- logica de alberto (agenda) ---
+function iniciarLogicaP3Alberto() {
+    let contactos = JSON.parse(localStorage.getItem('agendaContactos_alberto')) || [];
+    let formulario = document.querySelector('#formulario-alberto');
+
+    function guardar() {
+        // persiste la coleccion completa de contactos en el localstorage
+        localStorage.setItem('agendaContactos_alberto', JSON.stringify(contactos));
+    }
+
+    function pintar() {
+        // filtra por la busqueda y reconstruye los resultados visibles
+        let consulta = document.querySelector('#buscar-alberto').value.toLowerCase();
+        let lista = document.querySelector('#lista-alberto');
+        lista.replaceChildren();
+
+        contactos
+            .filter((contacto) =>
+                JSON.stringify(contacto).toLowerCase().includes(consulta)
+            )
+            .forEach((contacto) => {
+                let elemento = document.createElement('article');
+                elemento.className = 'contacto nota-card';
+                elemento.style.margin = "0";
+                elemento.style.display = "flex";
+                elemento.style.justifyContent = "space-between";
+                elemento.style.alignItems = "center";
+                elemento.style.padding = "10px";
+
+                elemento.innerHTML = `<span><b></b><small></small></span><button type="button" class="btn-eliminar" style="padding:6px 10px; cursor:pointer;">Eliminar</button>`;
+                
+                elemento.querySelector('b').textContent = `${contacto.nombre} · ${contacto.categoria} · `;
+                elemento.querySelector('small').textContent = `${contacto.telefono} · ${contacto.correo}`;
+                
+                elemento.querySelector('button').addEventListener('click', () => {
+                    // elimina el contacto seleccionado
+                    contactos.splice(contactos.indexOf(contacto), 1);
+                    guardar();
+                    pintar();
+                });
+                lista.appendChild(elemento);
+            });
+    }
+
+    formulario.addEventListener('submit', (evento) => {
+        // agrega un contacto solamente si el correo no existe
+        evento.preventDefault();
+        let contacto = Object.fromEntries(new FormData(formulario));
+        if (contactos.some(item => item.correo === contacto.correo)) {
+            alert("El correo ya existe en la agenda");
+            return;
+        }
+        contactos.push(contacto);
+        guardar();
+        formulario.reset();
+        pintar();
+    });
+
+    document.querySelector('#buscar-alberto').addEventListener('input', pintar);
+    pintar();
+}
+
+// --- logica de aneth (agenda) ---
+function iniciarLogicaP3Aneth() {
+    let contactos = JSON.parse(localStorage.getItem("agendaContactos_aneth")) || [];
+    let formulario = document.querySelector("#formulario-aneth");
+    let inputBuscar = document.querySelector("#buscar-aneth");
+    let lista = document.querySelector("#lista-aneth");
+
+    function guardar() {
+        // persiste la coleccion de contactos en el localstorage
+        localStorage.setItem("agendaContactos_aneth", JSON.stringify(contactos));
+    }
+
+    function pintar() {
+        // filtra por la busqueda y reconstruye los resultados en la tabla
+        let consulta = inputBuscar.value.toLowerCase();
+        lista.replaceChildren();
+
+        contactos.filter(contacto => JSON.stringify(contacto).toLowerCase().includes(consulta)).forEach((contacto, indice) => {
+            let elemento = document.createElement("article");
+            elemento.className = "contacto nota-card";
+            elemento.style.margin = "0";
+            elemento.style.display = "flex";
+            elemento.style.justifyContent = "space-between";
+            elemento.style.alignItems = "center";
+            elemento.style.padding = "10px";
+
+            elemento.innerHTML = `<span><b></b><small></small></span><button type="button" class="btn-eliminar" style="padding:6px 10px; cursor:pointer;">Eliminar</button>`;
+            
+            elemento.querySelector("b").textContent = contacto.nombre + " - " + contacto.categoria + " - ";
+            elemento.querySelector("small").textContent = contacto.telefono + " - " + contacto.correo;
+            
+            elemento.querySelector("button").addEventListener("click", () => {
+                // elimina el contacto de la coleccion y actualiza la tabla
+                contactos.splice(indice, 1);
+                guardar();
+                pintar();
+            });
+            lista.appendChild(elemento);
+        });
+    }
+
+    formulario.addEventListener("submit", (evento) => {
+        // agrega un contacto solamente si el correo no existe en la coleccion
+        evento.preventDefault();
+        let contacto = Object.fromEntries(new FormData(formulario));
+        if (contactos.some(item => item.correo === contacto.correo)) {
+            alert("El correo ya existe en la agenda");
+            return;
+        }
+        contactos.push(contacto);
+        guardar();
+        formulario.reset();
+        pintar();
+    });
+
+    inputBuscar.addEventListener("input", pintar);
+    pintar();
+}
+
+
+
+// ==========================================
+// logica para la practica 04 (nomina semanal)
+// ==========================================
+
+function cargarPractica4(integrante) {
+    const contenedorPrincipal = document.querySelector("#contenedorPractica");
+    if (!contenedorPrincipal) return;
+
+    // inyectamos la estructura html de la practica 4 adaptada con sufijos unicos
+    contenedorPrincipal.innerHTML = `
+        <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+            <h1 style="font-size: 1.4rem; text-align: center; margin-bottom: 15px;">Cálculo de Pago de Nómina - (${integrante.toUpperCase()})</h1>
+
+            <form id="formulario-pago-${integrante}" style="max-width: 100%; margin: 0 auto; background: transparent; box-shadow: none; border: none; padding: 0;">
+                <label for="empleado-${integrante}" style="display:block; margin-bottom:6px; font-weight:600;">Nombre del empleado:</label>
+                <input type="text" id="empleado-${integrante}" required placeholder="Ej. Mario Zapata" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                <label for="horas-${integrante}" style="display:block; margin-bottom:6px; font-weight:600;">Total de horas trabajadas:</label>
+                <input type="number" id="horas-${integrante}" step="1" min="1" required placeholder="0" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                <label for="pago_hora-${integrante}" style="display:block; margin-bottom:6px; font-weight:600;">Pago por una hora trabajada ($):</label>
+                <input type="number" id="pago_hora-${integrante}" step="10" min="0" required placeholder="0" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                <button type="submit" class="btn-editar" style="width:100%; padding:10px; font-weight:bold; cursor:pointer;">Calcular</button>
+            </form>
+
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--gray-border);">
+            <div id="resultado-${integrante}" style="padding: 14px; background: var(--pale-pink); border-radius: 8px; border: 1px solid var(--gray-border); font-weight: 500; line-height: 1.6;">Esperando datos...</div>
+        </div>
+    `;
+
+    // iniciamos la logica correspondiente al integrante
+    iniciarLogicaP4(integrante);
+}
+
+function iniciarLogicaP4(integrante) {
+    const claveStorage = `practica4_nomina_${integrante}`;
+    const formulario = document.querySelector(`#formulario-pago-${integrante}`);
+    const contenedorResultado = document.querySelector(`#resultado-${integrante}`);
+    const campoEmpleado = document.querySelector(`#empleado-${integrante}`);
+    const campoHoras = document.querySelector(`#horas-${integrante}`);
+    const campoPagoHora = document.querySelector(`#pago_hora-${integrante}`);
+
+    // funcion para pintar el resultado en pantalla
+    function mostrarResultado(empleado, horas, pagoTotal) {
+        contenedorResultado.innerHTML = `
+            <strong>Empleado:</strong> ${empleado}<br>
+            <strong>Horas:</strong> ${horas}<br>
+            <strong>Total a pagar:</strong> $${pagoTotal.toFixed(2)}
+        `;
+    }
+
+    // cargar datos guardados previamente en localstorage si existen
+    function cargarDatos() {
+        try {
+            const guardado = localStorage.getItem(claveStorage);
+            if (!guardado) return;
+            const datos = JSON.parse(guardado);
+            
+            campoEmpleado.value = datos.empleado;
+            campoHoras.value = datos.horas;
+            campoPagoHora.value = datos.pago_hora;
+
+            const horasNormales = Math.min(datos.horas, 40);
+            const horasExtra = Math.max(datos.horas - 40, 0);
+            const pagoTotal = (horasNormales * datos.pago_hora) + (horasExtra * datos.pago_hora * 1.5);
+
+            mostrarResultado(datos.empleado, datos.horas, pagoTotal);
+        } catch {
+            contenedorResultado.textContent = "No se pudieron recuperar los datos guardados.";
+        }
+    }
+
+    formulario.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const empleado = campoEmpleado.value.trim();
+        const horas = Number(campoHoras.value);
+        const pago_hora = Number(campoPagoHora.value);
+
+        const horasNormales = Math.min(horas, 40);
+        const horasExtra = Math.max(horas - 40, 0);
+
+        const pagoNormal = horasNormales * pago_hora;
+        const pagoExtra = horasExtra * pago_hora * 1.5;
+        const pagoTotal = pagoNormal + pagoExtra;
+
+        // guardamos los datos en localstorage con su clave unica del integrante
+        try {
+            localStorage.setItem(claveStorage, JSON.stringify({ empleado, horas, pago_hora }));
+        } catch {
+            contenedorResultado.textContent = "No se pudieron guardar los datos en este navegador.";
+            return;
+        }
+
+        mostrarResultado(empleado, horas, pagoTotal);
+    });
+
+    cargarDatos();
+}
+
+
+
 // ------------------------------------------
 // LOGICA PARA LA PRACTICA 5 (Notas Rápidas)
 // ------------------------------------------
@@ -1036,7 +1346,517 @@ function iniciarLogicaP10Real(integrante) {
     cargar();
 }
 
+// ==========================================
+// logica para el examen del 29 de septiembre (inscripcion a cursos - alberto y aneth)
+// ==========================================
 
+function cargarExamen29(integrante) {
+    const contenedorPrincipal = document.querySelector("#contenedorPractica");
+    if (!contenedorPrincipal) return;
+
+    if (integrante === 'alberto') {
+        // estructura html adaptada para alberto (examen 29 sep)
+        contenedorPrincipal.innerHTML = `
+            <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+                <h2 style="text-align: center; margin-bottom: 15px;">Inscripción a Cursos - (ALBERTO)</h2>
+
+                <form id="formulario-examen-alberto" style="max-width: 100%; margin: 0 auto; background: transparent; box-shadow: none; border: none; padding: 0;">
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Nombre:</label>
+                    <input type="text" id="nombre-alberto" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Correo electrónico:</label>
+                    <input type="text" id="correo-alberto" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Teléfono:</label>
+                    <input type="number" id="telefono-alberto" required style="width:100%; padding:10px; margin-bottom:10px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Curso:</label>
+                    <select id="curso-alberto" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                        <option value="">Curso</option>
+                        <option value="desarrollo web">Desarrollo web</option>
+                        <option value="javaScript">javaScript</option>
+                        <option value="BasesdeDatos">Base de datos</option>
+                    </select>
+
+                    <p style="font-weight:600; margin-bottom:6px;">Modalidad:</p>
+                    <div style="display:flex; gap:15px; margin-bottom:12px; align-items:center;">
+                        <label><input type="checkbox" id="presencial-alberto"> Presencial</label>
+                        <label><input type="checkbox" id="linea-alberto"> Línea</label>
+                    </div>
+
+                    <p style="font-weight:600; margin-bottom:6px;">¿Cuentas con credencial?</p>
+                    <div style="display:flex; gap:15px; margin-bottom:12px; align-items:center;">
+                        <label><input type="radio" name="decicion-alberto" value="si" required> Sí</label>
+                        <label><input type="radio" name="decicion-alberto" value="no" required> No</label>
+                    </div>
+
+                    <label style="display:flex; gap:8px; align-items:center; margin-bottom:15px; font-weight:600;">
+                        <input type="checkbox" id="terminos-alberto" required> Aceptas Términos y condiciones
+                    </label>
+
+                    <button type="submit" class="btn-editar" style="width:100%; padding:10px; font-weight:bold; cursor:pointer;">Subir</button>
+                </form>
+
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--gray-border);">
+                <h2 style="text-align: center; font-size: 1.2rem;">Resultados</h2>
+                <div id="res-alberto" style="padding: 12px; background: var(--pale-pink); border-radius: 8px; border: 1px solid var(--gray-border);"></div>
+            </div>
+        `;
+        iniciarLogicaExamenAlberto();
+
+    } else if (integrante === 'aneth') {
+        // estructura html adaptada para aneth (examen 29 sep)
+        contenedorPrincipal.innerHTML = `
+            <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+                <h2 style="text-align: center; margin-bottom: 15px;">Inscripción a Cursos - (ANETH)</h2>
+
+                <form id="formulario-examen-aneth" style="max-width: 100%; margin: 0 auto; background: transparent; box-shadow: none; border: none; padding: 0;">
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Nombre:</label>
+                    <input type="text" id="nombre-aneth" style="width:100%; padding:10px; margin-bottom:5px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                    <span id="error-nombre-aneth" class="error" style="color:red; font-size:0.85rem;"></span>
+                    <br>
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Correo:</label>
+                    <input type="text" id="correo-aneth" style="width:100%; padding:10px; margin-bottom:5px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                    <span id="error-correo-aneth" class="error" style="color:red; font-size:0.85rem;"></span>
+                    <br>
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Teléfono:</label>
+                    <input type="text" id="telefono-aneth" style="width:100%; padding:10px; margin-bottom:5px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                    <span id="error-telefono-aneth" class="error" style="color:red; font-size:0.85rem;"></span>
+                    <br>
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Curso:</label>
+                    <select id="curso-aneth" style="width:100%; padding:10px; margin-bottom:5px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                        <option value="">-- Selecciona --</option>
+                        <option value="Desarrollo Web">Desarrollo Web ($1,200)</option>
+                        <option value="JavaScript">JavaScript ($1,500)</option>
+                        <option value="Bases de Datos">Bases de Datos ($1,800)</option>
+                    </select>
+                    <span id="error-curso-aneth" class="error" style="color:red; font-size:0.85rem;"></span>
+                    <br>
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Modalidad:</label>
+                    <select id="modalidad-aneth" style="width:100%; padding:10px; margin-bottom:5px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                        <option value="">-- Selecciona --</option>
+                        <option value="en linea">En línea</option>
+                        <option value="presencial">Presencial</option>
+                    </select>
+                    <span id="error-modalidad-aneth" class="error" style="color:red; font-size:0.85rem;"></span>
+                    <br>
+
+                    <label style="display:flex; gap:8px; align-items:center; margin-bottom:10px; font-weight:600;">
+                        <input type="checkbox" id="credencial-aneth"> ¿Tienes credencial de estudiante?
+                    </label>
+
+                    <label style="display:flex; gap:8px; align-items:center; margin-bottom:5px; font-weight:600;">
+                        <input type="checkbox" id="terminos-aneth"> Acepto los términos
+                    </label>
+                    <span id="error-terminos-aneth" class="error" style="color:red; font-size:0.85rem;"></span>
+                    <br>
+
+                    <div style="display:flex; gap:10px;">
+                        <button type="submit" class="btn-editar" style="flex:1; padding:10px; font-weight:bold; cursor:pointer;">Enviar</button>
+                        <button type="button" id="btn-limpiar-aneth" style="flex:1; padding:10px; font-weight:bold; cursor:pointer; background:var(--gray-border); border:none; border-radius:6px;">Limpiar</button>
+                    </div>
+                </form>
+
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--gray-border);">
+                <h2 style="text-align: center; font-size: 1.2rem;">Resumen</h2>
+                <div id="res-aneth" style="padding: 12px; background: var(--pale-pink); border-radius: 8px; border: 1px solid var(--gray-border);"></div>
+            </div>
+        `;
+        iniciarLogicaExamenAneth();
+    }
+}
+
+// ==========================================
+// logica para el examen del 29 de septiembre (alberto y aneth)
+// ==========================================
+
+function cargarExamen29(integrante) {
+    const contenedorPrincipal = document.querySelector("#contenedorPractica");
+    if (!contenedorPrincipal) return;
+
+    if (integrante === 'alberto') {
+        // estructura html adaptada para la version de alberto
+        contenedorPrincipal.innerHTML = `
+            <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+                <h2 style="text-align: center; margin-bottom: 15px;">Inscripción a Cursos - Examen (ALBERTO)</h2>
+
+                <form id="formulario-examen-alberto" style="max-width: 100%; margin: 0 auto; background: transparent; box-shadow: none; border: none; padding: 0;">
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Nombre:</label>
+                    <input type="text" id="nombre-alberto" required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Correo electrónico:</label>
+                    <input type="text" id="correo-alberto" required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Teléfono:</label>
+                    <input type="number" id="telefono-alberto" required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Curso:</label>
+                    <select id="curso-alberto" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                        <option value="">Curso</option>
+                        <option value="desarrollo web">Desarrollo web</option>
+                        <option value="javaScript">javaScript</option>
+                        <option value="BasesdeDatos">Base de datos</option>
+                    </select>
+
+                    <p style="font-weight:600; margin: 10px 0 6px;">Modalidad:</p>
+                    <div style="display: flex; gap: 15px; margin-bottom: 12px;">
+                        <label><input type="checkbox" id="presencial-alberto"> Presencial</label>
+                        <label><input type="checkbox" id="linea-alberto"> Linea</label>
+                    </div>
+
+                    <p style="font-weight:600; margin: 10px 0 6px;">Cuentas con credencial?</p>
+                    <div style="display: flex; gap: 15px; margin-bottom: 12px;">
+                        <label><input type="radio" name="decicion-alberto" value="si" required> Si</label>
+                        <label><input type="radio" name="decicion-alberto" value="no" required> No</label>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label><input type="checkbox" id="terminos-alberto" required> Aceptas Terminos y condiciones</label>
+                    </div>
+
+                    <button type="submit" class="btn-editar" style="width:100%; padding:10px; font-weight:bold; cursor:pointer;">Subir</button>
+                </form>
+
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--gray-border);">
+                <h2 style="font-size: 1.2rem; text-align: center;">Resultados</h2>
+                <div id="res-alberto" style="padding: 12px; background: var(--pale-pink); border-radius: 8px; border: 1px solid var(--gray-border);"></div>
+            </div>
+        `;
+        iniciarLogicaExamenAlberto();
+
+    } else if (integrante === 'aneth') {
+        // estructura html adaptada para la version de aneth
+        contenedorPrincipal.innerHTML = `
+            <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+                <h2 style="text-align: center; margin-bottom: 15px;">Inscripción a Cursos - Examen (ANETH)</h2>
+
+                <form id="formulario-examen-aneth" style="max-width: 100%; margin: 0 auto; background: transparent; box-shadow: none; border: none; padding: 0;">
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Nombre:</label>
+                    <input type="text" id="nombre-aneth" style="width:100%; padding:10px; margin-bottom:4px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                    <span id="error-nombre-aneth" class="error" style="color:red; font-size:0.85rem;"></span>
+                    <br>
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Correo electrónico:</label>
+                    <input type="text" id="correo-aneth" style="width:100%; padding:10px; margin-bottom:4px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                    <span id="error-correo-aneth" class="error" style="color:red; font-size:0.85rem;"></span>
+                    <br>
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Teléfono:</label>
+                    <input type="text" id="telefono-aneth" maxlength="10" style="width:100%; padding:10px; margin-bottom:4px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                    <span id="error-telefono-aneth" class="error" style="color:red; font-size:0.85rem;"></span>
+                    <br>
+
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Curso:</label>
+                    <select id="curso-aneth" style="width:100%; padding:10px; margin-bottom:4px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink);">
+                        <option value="">Curso</option>
+                        <option value="Desarrollo Web">Desarrollo Web</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="Bases de Datos">Bases de Datos</option>
+                    </select>
+                    <span id="error-curso-aneth" class="error" style="color:red; font-size:0.85rem;"></span>
+                    <br>
+
+                    <p style="font-weight:600; margin: 10px 0 6px;">Modalidad:</p>
+                    <div style="display: flex; gap: 15px; margin-bottom: 4px;">
+                        <label><input type="checkbox" id="presencial-aneth"> Presencial</label>
+                        <label><input type="checkbox" id="linea-aneth"> Línea</label>
+                    </div>
+                    <span id="error-modalidad-aneth" class="error" style="color:red; font-size:0.85rem;"></span>
+                    <br>
+
+                    <p style="font-weight:600; margin: 10px 0 6px;">¿Cuentas con credencial?</p>
+                    <div style="display: flex; gap: 15px; margin-bottom: 12px;">
+                        <label><input type="radio" name="credencial-aneth" value="si"> Sí</label>
+                        <label><input type="radio" name="credencial-aneth" value="no" checked> No</label>
+                    </div>
+
+                    <div style="margin-bottom: 4px;">
+                        <label><input type="checkbox" id="terminos-aneth"> Aceptas Términos y condiciones</label>
+                    </div>
+                    <span id="error-terminos-aneth" class="error" style="color:red; font-size:0.85rem;"></span>
+                    <br>
+
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button type="submit" class="btn-editar" style="flex: 1; padding:10px; font-weight:bold; cursor:pointer;">Subir</button>
+                        <button type="button" id="btn-limpiar-aneth" style="flex: 1; background-color: #ccc; color: #333; border:none; border-radius:6px; padding:10px; font-weight:bold; cursor:pointer;">Limpiar</button>
+                    </div>
+                </form>
+
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--gray-border);">
+                <h2 style="font-size: 1.2rem; text-align: center;">Resultados</h2>
+                <div id="res-aneth" style="padding: 12px; background: var(--pale-pink); border-radius: 8px; border: 1px solid var(--gray-border);"></div>
+            </div>
+        `;
+        iniciarLogicaExamenAneth();
+    }
+}
+
+// --- logica de alberto (examen 29 sep) ---
+function iniciarLogicaExamenAlberto() {
+    const formulario = document.querySelector("#formulario-examen-alberto");
+    const respuesta = document.querySelector("#res-alberto");
+
+    formulario.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const nombre = document.querySelector("#nombre-alberto").value;
+        const correo = document.querySelector("#correo-alberto").value;
+        const telefono = document.querySelector("#telefono-alberto").value;
+        const curso = document.querySelector("#curso-alberto").value;
+        const presencial = document.querySelector("#presencial-alberto").checked;
+        const linea = document.querySelector("#linea-alberto").checked;
+
+        // muestra el resultado adaptado con los datos capturados
+        respuesta.innerHTML = `
+            <p><strong>Nombre:</strong> ${nombre}</p>
+            <p><strong>Correo:</strong> ${correo}</p>
+            <p><strong>Telefono:</strong> ${telefono}</p>
+            <p><strong>Curso:</strong> ${curso}</p>
+            <p><strong>Modalidad Presencial:</strong> ${presencial ? 'Si' : 'No'}</p>
+            <p><strong>Modalidad Linea:</strong> ${linea ? 'Si' : 'No'}</p>
+        `;
+    });
+}
+
+// --- logica de aneth (examen 29 sep) ---
+function iniciarLogicaExamenAneth() {
+    const formulario = document.querySelector("#formulario-examen-aneth");
+    const resultado = document.querySelector("#res-aneth");
+    const btnLimpiar = document.querySelector("#btn-limpiar-aneth");
+
+    function limpiarErrores() {
+        let errores = formulario.querySelectorAll(".error");
+        for (let i = 0; i < errores.length; i++) {
+            errores[i].textContent = "";
+        }
+    }
+
+    formulario.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        limpiarErrores();
+        resultado.innerHTML = "";
+
+        let nombre = document.querySelector("#nombre-aneth").value.trim();
+        let correo = document.querySelector("#correo-aneth").value.trim();
+        let telefono = document.querySelector("#telefono-aneth").value.trim();
+        let curso = document.querySelector("#curso-aneth").value;
+        let presencial = document.querySelector("#presencial-aneth").checked;
+        let linea = document.querySelector("#linea-aneth").checked;
+        let credencialRadio = formulario.querySelector('input[name="credencial-aneth"]:checked');
+        let tieneCredencial = credencialRadio ? credencialRadio.value === "si" : false;
+        let aceptoTerminos = document.querySelector("#terminos-aneth").checked;
+
+        let esValido = true;
+
+        if (nombre === "") {
+            document.querySelector("#error-nombre-aneth").textContent = "Nombre obligatorio";
+            esValido = false;
+        }
+
+        if (correo === "" || !correo.includes("@")) {
+            document.querySelector("#error-correo-aneth").textContent = "Correo no valido";
+            esValido = false;
+        }
+
+        if (telefono.length !== 10 || isNaN(telefono)) {
+            document.querySelector("#error-telefono-aneth").textContent = "Debe ser de 10 numeros";
+            esValido = false;
+        }
+
+        if (curso === "") {
+            document.querySelector("#error-curso-aneth").textContent = "Selecciona un curso";
+            esValido = false;
+        }
+
+        if (!presencial && !linea) {
+            document.querySelector("#error-modalidad-aneth").textContent = "Selecciona modalidad";
+            esValido = false;
+        }
+
+        if (!aceptoTerminos) {
+            document.querySelector("#error-terminos-aneth").textContent = "Acepta los terminos";
+            esValido = false;
+        }
+
+        if (!esValido) {
+            return;
+        }
+
+        let precioCurso = 0;
+        if (curso === "Desarrollo Web") precioCurso = 1200;
+        if (curso === "JavaScript") precioCurso = 1500;
+        if (curso === "Bases de Datos") precioCurso = 1800;
+
+        let recargo = presencial ? 300 : 0;
+        let cuota = 200;
+        let descuento = tieneCredencial ? precioCurso * 0.10 : 0;
+        let total = precioCurso + recargo + cuota - descuento;
+
+        resultado.innerHTML = `
+            <p><strong>Nombre:</strong> ${nombre}</p>
+            <p><strong>Correo:</strong> ${correo}</p>
+            <p><strong>Telefono:</strong> ${telefono}</p>
+            <p><strong>Curso:</strong> ${curso}</p>
+            <p><strong>Modalidad:</strong> ${presencial ? 'Presencial ' : ''}${linea ? 'Linea' : ''}</p>
+            <p><strong>Precio Curso:</strong> $${precioCurso}</p>
+            <p><strong>Recargo Presencial:</strong> $${recargo}</p>
+            <p><strong>Descuento Credencial:</strong> -$${descuento}</p>
+            <p><strong>Cuota de Inscripcion:</strong> $${cuota}</p>
+            <h3>Total a Pagar: $${total} MXN</h3>
+        `;
+    });
+
+    btnLimpiar.addEventListener("click", function() {
+        formulario.reset();
+        limpiarErrores();
+        resultado.innerHTML = "";
+    });
+}
+
+// ==========================================
+// logica para el examen del 9 de octubre 
+// ==========================================
+
+function cargarExamen9(integrante) {
+    const contenedorPrincipal = document.querySelector("#contenedorPractica");
+    if (!contenedorPrincipal) return;
+
+    if (integrante === 'alberto') {
+        // estructura html adaptada para alberto (bitacora de actividades)
+        contenedorPrincipal.innerHTML = `
+            <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+                <h1 style="font-size: 1.4rem; text-align: center; margin-bottom: 15px;">Bitácora de Tareas - (ALBERTO)</h1>
+                
+                <form id="formulario-examen9-alberto" style="max-width: 100%; margin: 0 auto; background: transparent; box-shadow: none; border: none; padding: 0;">
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Escribe tu actividad:</label>
+                    <textarea id="nota-alberto" placeholder="Describe la tarea o pendiente..." required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink); min-height:80px;"></textarea>
+                    
+                    <button type="submit" class="btn-editar" style="width:100%; padding:10px; font-weight:bold; cursor:pointer;">Guardar Tarea</button>
+                </form>
+
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--gray-border);">
+                <h2 style="font-size: 1.2rem; text-align: center; margin-bottom: 10px;">Tareas Registradas</h2>
+                <div id="resultado-alberto" style="display: grid; gap: 10px;"></div>
+            </div>
+        `;
+        iniciarLogicaExamen9Alberto();
+
+    } else if (integrante === 'aneth') {
+        // estructura html adaptada para aneth (notas rapidas / recordatorios)
+        contenedorPrincipal.innerHTML = `
+            <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+                <h1 style="font-size: 1.4rem; text-align: center; margin-bottom: 15px;">Notas Rápidas - (ANETH)</h1>
+                
+                <form id="formulario-examen9-aneth" style="max-width: 100%; margin: 0 auto; background: transparent; box-shadow: none; border: none; padding: 0;">
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">Escribe tu recordatorio:</label>
+                    <textarea id="nota-aneth" placeholder="Escribe tu nota rápida aquí..." required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--gray-border); border-radius:6px; background:var(--pale-pink); min-height:80px;"></textarea>
+                    
+                    <button type="submit" class="btn-editar" style="width:100%; padding:10px; font-weight:bold; cursor:pointer;">Guardar Nota</button>
+                </form>
+
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--gray-border);">
+                <h2 style="font-size: 1.2rem; text-align: center; margin-bottom: 10px;">Notas Guardadas</h2>
+                <div id="resultado-aneth" style="display: grid; gap: 10px;"></div>
+            </div>
+        `;
+        iniciarLogicaExamen9Aneth();
+    }
+}
+
+// --- logica de alberto (examen 9 oct) ---
+function iniciarLogicaExamen9Alberto() {
+    const formulario = document.getElementById("formulario-examen9-alberto");
+    const notaInput = document.getElementById("nota-alberto");
+    const resultado = document.getElementById("resultado-alberto");
+
+    let notaExamenAlberto = JSON.parse(localStorage.getItem("notaExamen_alberto")) || [];
+
+    function printAlberto() {
+        resultado.replaceChildren();
+        notaExamenAlberto.forEach(function(texto, indice) {
+            let item = document.createElement("div");
+            item.className = "contacto nota-card";
+            item.style.margin = "0";
+            item.style.display = "flex";
+            item.style.justifyContent = "space-between";
+            item.style.alignItems = "center";
+            item.style.padding = "10px";
+
+            item.innerHTML = `
+                <p style="margin: 0; word-break: break-word; flex: 1; padding-right: 10px;">${texto}</p>
+                <button type="button" class="btn-eliminar" onclick="eliminarAlberto(${indice})" style="padding:6px 10px; cursor:pointer;">Completar</button>
+            `;
+            resultado.appendChild(item);
+        });
+    }
+
+    formulario.addEventListener("submit", function(e) {
+        e.preventDefault();
+        notaExamenAlberto.push(notaInput.value);
+        localStorage.setItem("notaExamen_alberto", JSON.stringify(notaExamenAlberto));
+        notaInput.value = "";
+        printAlberto();
+    });
+
+    // funcion global unica para el onclick del boton de alberto
+    window.eliminarAlberto = function(indice) {
+        notaExamenAlberto.splice(indice, 1);
+        localStorage.setItem("notaExamen_alberto", JSON.stringify(notaExamenAlberto));
+        printAlberto();
+    }
+
+    printAlberto();
+}
+
+// --- logica de aneth (examen 9 oct) ---
+function iniciarLogicaExamen9Aneth() {
+    const formulario = document.getElementById("formulario-examen9-aneth");
+    const notaInput = document.getElementById("nota-aneth");
+    const resultado = document.getElementById("resultado-aneth");
+
+    let notaExamenAneth = JSON.parse(localStorage.getItem("notaExamen_aneth")) || [];
+
+    function printAneth() {
+        resultado.replaceChildren();
+        notaExamenAneth.forEach(function(texto, indice) {
+            let item = document.createElement("div");
+            item.className = "contacto nota-card";
+            item.style.margin = "0";
+            item.style.display = "flex";
+            item.style.justifyContent = "space-between";
+            item.style.alignItems = "center";
+            item.style.padding = "10px";
+
+            item.innerHTML = `
+                <p style="margin: 0; word-break: break-word; flex: 1; padding-right: 10px;">${texto}</p>
+                <button type="button" class="btn-eliminar" onclick="eliminarAneth(${indice})" style="padding:6px 10px; cursor:pointer;">Eliminar</button>
+            `;
+            resultado.appendChild(item);
+        });
+    }
+
+    formulario.addEventListener("submit", function(e) {
+        e.preventDefault();
+        notaExamenAneth.push(notaInput.value);
+        localStorage.setItem("notaExamen_aneth", JSON.stringify(notaExamenAneth));
+        notaInput.value = "";
+        printAneth();
+    });
+
+    // funcion global unica para el onclick del boton de aneth
+    window.eliminarAneth = function(indice) {
+        notaExamenAneth.splice(indice, 1);
+        localStorage.setItem("notaExamen_aneth", JSON.stringify(notaExamenAneth));
+        printAneth();
+    }
+
+    printAneth();
+}
 
 
 

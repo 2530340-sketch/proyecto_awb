@@ -1,0 +1,49 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #3d1437;
+  background: #f9a0ff;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+.panel {
+  width: min(100%, 550px);
+  padding: 30px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 16px 35px #14213d18;
+}
+.eyebrow {
+  color: #fb19c6;
+  font-weight: 800;
+}
+form {
+  display: grid;
+  gap: 12px;
+}
+input,
+select,
+button {
+  padding: 12px;
+  border: 1px solid #ff95ef;
+  border-radius: 8px;
+  font: inherit;
+}
+button {
+  color: #fff;
+  border: 0;
+  background: #770360;
+  cursor: pointer;
+}
+button:last-child {
+  color: #8b256e;
+  background: #ff95ef;
+}
+#estado {
+  color: #f429bb;
+  font-weight: 700;
+}

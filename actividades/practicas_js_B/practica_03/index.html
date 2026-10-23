@@ -1,23 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practica_JS_1t</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Agenda de contactos</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="app.js" defer></script>
 </head>
 <body>
-    <h1 id="saludo">HOLA</h1>
-    <h1>Práctica de JavaScript - Ejercicios</h1>
+	<main class="panel">
+		<p class="eyebrow">Ejercicio Agenda</p>
+		<h1>Agenda UPV</h1>
 
-    <h2>Ejercicio 1: Datos de Alumno</h2>
-    <pre id="ejercicio1"></pre>
+		<form id="formulario">
+			<label for="nombre">Nombre</label>
+			<input id="nombre" name="nombre" type="text" placeholder="Ingresa un nombre" required>
 
-    <h2>Ejercicio 2: Operaciones Matemáticas</h2>
-    <pre id="ejercicio2"></pre>
+			<label for="telefono">Teléfono</label>
+			<input id="telefono" name="telefono" type="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="Ingrese su telefono" required>
 
-    <h2>Ejercicio 3: Control de Edad</h2>
-    <pre id="ejercicio3"></pre>
+			<label for="correo">Correo electrónico</label>
+			<input id="correo" name="correo" type="email" placeholder="nombre@ejemplo.com" required>
 
-    <script src="app.js"></script>
+			<label for="categoria">Categoría</label>
+			<select id="categoria" name="categoria" required>
+				<option value="">Selecciona una categoría</option>
+				<option value="Familia">Familia</option>
+				<option value="Amigos">Amigos</option>
+				<option value="Deporte">Deporte</option>
+                <option value="Baile">Baile</option>\
+			</select>
+
+			<button type="submit">Guardar contacto</button>
+		</form>
+        <br>
+		<label for="buscar">Buscar contacto</label>
+		<input id="buscar" name="buscar" type="search" placeholder="Escribe un nombre">
+		<section id="lista" aria-live="polite" aria-label="Contactos"></section>
+	</main>
 </body>
 </html>

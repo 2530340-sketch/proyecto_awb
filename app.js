@@ -35,34 +35,6 @@ document.querySelectorAll("#videos [data-video]").forEach(boton => {
 
 
 
-let videos = {
-    video1: "https://www.youtube.com/embed/hEyqVsG0Fo8",
-    video2: "https://www.youtube.com/embed/bE1b2w0PZwQ",
-    video3: "https://www.youtube.com/embed/m2tdMHpU358",
-    video4: "https://www.youtube.com/embed/CiO6u0vm1aU",
-    video5: "https://www.youtube.com/embed/GHHRrQeI0IY",
-    video6: "https://www.youtube.com/embed/yqlzWsHKYxg",
-    video7: "https://www.youtube.com/embed/BKOfXZf2Lcg",
-    video8: "https://www.youtube.com/embed/s-Dw64w1hII"
-};
-
-document.querySelectorAll("#videos [data-video]").forEach(boton => {
-    boton.addEventListener("click", () => {
-        let enlace = videos[boton.dataset.video];
-
-        document.querySelector("#contenedorVideo").innerHTML = `
-            <iframe
-                src="${enlace}"
-                width="560"
-                height="315"
-                allowfullscreen>
-            </iframe>
-        `;
-    });
-});
-
-
-
 
 
 

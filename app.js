@@ -4,6 +4,213 @@ function guardar() {
     localStorage.setItem("actividadesAcademicas", JSON.stringify(actividad));
 }
 
+// ------------------------------------------
+// LOGICA PARA LA PRACTICA 3 (Registro)
+// ------------------------------------------
+
+function cargarPractica3(integrante) {
+    const contenedorPrincipal = document.querySelector("#contenedorPractica");
+    if (!contenedorPrincipal) return;
+
+    contenedorPrincipal.innerHTML = `
+        <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
+            <h2>Formulario de Registro (${integrante.toUpperCase()})</h2>
+            <p id="estado-p3-${integrante}" style="color:var(--primary-pink);"></p>
+            <form id="form-p3-${integrante}" style="margin-top:15px; display:grid; gap:10px; max-width:600px;">
+                <input name="nombre" placeholder="Nombre" required>
+                <input name="correo" type="email" placeholder="Correo" required>
+                <input name="telefono" type="tel" placeholder="Teléfono" maxlength="10" pattern="[0-9]{10}" title="Escribe 10 dígitos" required>
+                <input name="ciudad" placeholder="Ciudad">
+                <select name="curso" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Desarrollo web">Desarrollo web</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="Python">Python</option>
+                </select>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button type="submit" class="btn-editar">Confirmar registro</button>
+                    <button type="button" id="borrar-p3-${integrante}" class="btn-eliminar">Limpiar</button>
+                </div>
+            </form>
+        </div>
+    `;
+
+    iniciarLogicaP3(integrante);
+}
+
+function iniciarLogicaP3(integrante) {
+    const formulario = document.querySelector(`#form-p3-${integrante}`);
+    const clave = `p3_borradorRegistro_${integrante}`;
+    const estado = document.querySelector(`#estado-p3-${integrante}`);
+    const botonBorrar = document.querySelector(`#borrar-p3-${integrante}`);
+
+    if (!formulario || !estado || !botonBorrar) return;
+
+    function guardar() {
+        const datos = Object.fromEntries(new FormData(formulario));
+        localStorage.setItem(clave, JSON.stringify(datos));
+        estado.textContent = "Borrador guardado";
+    }
+
+    function cargar() {
+        try {
+            const datos = JSON.parse(localStorage.getItem(clave) || "{}");
+            Object.entries(datos).forEach(([campo, valor]) => {
+                if (formulario.elements[campo]) {
+                    formulario.elements[campo].value = valor;
+                }
+            });
+            if (Object.keys(datos).length > 0) {
+                estado.textContent = "Se recuperó el borrador guardado";
+            }
+        } catch (error) {
+            estado.textContent = "No se pudieron recuperar los datos guardados";
+        }
+    }
+
+    // Guarda el borrador mientras se escribe.
+    formulario.addEventListener("input", guardar);
+    formulario.addEventListener("change", guardar);
+
+    formulario.addEventListener("submit", (evento) => {
+        evento.preventDefault();
+        if (!formulario.checkValidity()) {
+            formulario.reportValidity();
+            return;
+        }
+        guardar();
+        estado.textContent = "Registro confirmado y guardado";
+    });
+
+    botonBorrar.addEventListener("click", () => {
+        formulario.reset();
+        localStorage.removeItem(clave);
+        estado.textContent = "Formulario limpiado";
+    });
+
+    cargar();
+}
+
+// ------------------------------------------
+// LOGICA PARA LA PRACTICA 4 (Agenda UPV)
+// ------------------------------------------
+
+function cargarPractica4(integrante) {
+    const contenedorPrincipal = document.querySelector("#contenedorPractica");
+    if (!contenedorPrincipal) return;
+
+    contenedorPrincipal.innerHTML = `
+        <div class="nota-card" style="grid-column:1 / -1; border-left:5px solid var(--primary-pink); padding:20px;">
+            <h2>Agenda UPV (${integrante.toUpperCase()})</h2>
+            <form id="form-p4-${integrante}" style="display:grid; gap:10px; max-width:600px;">
+                <input type="text" name="nombre" placeholder="Nombre" required>
+                <input type="tel" name="telefono" placeholder="Teléfono (10 dígitos)" maxlength="10" pattern="[0-9]{10}" title="Escribe 10 dígitos" required>
+                <input name="correo" type="email" placeholder="Correo" required>
+                <select name="categoria" required>
+                    <option value="Familia">Familia</option>
+                    <option value="Amigos">Amigos</option>
+                    <option value="Trabajo">Trabajo</option>
+                </select>
+                <button type="submit" class="btn-editar">Guardar contacto</button>
+            </form>
+            <input id="buscar-p4-${integrante}" placeholder="Buscar contacto" type="search" style="margin-top:15px; width:100%;">
+            <p id="estado-p4-${integrante}" style="color:var(--primary-pink);"></p>
+            <section id="lista-p4-${integrante}" style="display:grid; gap:10px; margin-top:10px;"></section>
+        </div>
+    `;
+
+    iniciarLogicaP4(integrante);
+}
+
+function iniciarLogicaP4(integrante) {
+    const claveStorage = `agendaContactos_${integrante}`;
+    const formulario = document.querySelector(`#form-p4-${integrante}`);
+    const inputBuscar = document.querySelector(`#buscar-p4-${integrante}`);
+    const lista = document.querySelector(`#lista-p4-${integrante}`);
+    const estado = document.querySelector(`#estado-p4-${integrante}`);
+
+    if (!formulario || !inputBuscar || !lista || !estado) return;
+
+    let contactos = [];
+    try {
+        const guardados = JSON.parse(localStorage.getItem(claveStorage) || "[]");
+        contactos = Array.isArray(guardados) ? guardados : [];
+    } catch (error) {
+        contactos = [];
+    }
+
+    function guardar() {
+        localStorage.setItem(claveStorage, JSON.stringify(contactos));
+    }
+
+    function pintar() {
+        const consulta = inputBuscar.value.toLowerCase().trim();
+        lista.replaceChildren();
+
+        const filtrados = contactos.filter(contacto =>
+            `${contacto.nombre} ${contacto.telefono} ${contacto.correo} ${contacto.categoria}`
+                .toLowerCase().includes(consulta)
+        );
+
+        if (filtrados.length === 0) {
+            lista.textContent = consulta ? "No se encontraron contactos." : "Todavía no hay contactos guardados.";
+            return;
+        }
+
+        filtrados.forEach(contacto => {
+            const elemento = document.createElement("article");
+            elemento.className = "nota-card";
+            elemento.style.padding = "12px";
+
+            const nombre = document.createElement("h3");
+            nombre.textContent = `${contacto.nombre} · ${contacto.categoria}`;
+            const detalles = document.createElement("p");
+            detalles.textContent = `${contacto.telefono} · ${contacto.correo}`;
+            const botonEliminar = document.createElement("button");
+            botonEliminar.type = "button";
+            botonEliminar.className = "btn-eliminar";
+            botonEliminar.textContent = "Eliminar";
+
+            botonEliminar.addEventListener("click", () => {
+                contactos = contactos.filter(item => item.id !== contacto.id);
+                guardar();
+                pintar();
+                estado.textContent = "Contacto eliminado";
+            });
+
+            elemento.append(nombre, detalles, botonEliminar);
+            lista.appendChild(elemento);
+        });
+    }
+
+    formulario.addEventListener("submit", (evento) => {
+        evento.preventDefault();
+        if (!formulario.checkValidity()) {
+            formulario.reportValidity();
+            return;
+        }
+
+        const contacto = Object.fromEntries(new FormData(formulario));
+        contacto.nombre = contacto.nombre.trim();
+        contacto.telefono = contacto.telefono.trim();
+        contacto.correo = contacto.correo.trim().toLowerCase();
+        contacto.id = Date.now();
+
+        if (contactos.some(item => item.correo.toLowerCase() === contacto.correo)) {
+            estado.textContent = "Ya existe un contacto con ese correo";
+            return;
+        }
+
+        contactos.push(contacto);
+        guardar();
+        formulario.reset();
+        estado.textContent = "Contacto guardado";
+        pintar();
+    });
+
+    inputBuscar.addEventListener("input", pintar);
+    pintar();
+}
 
 
 // ==========================================
@@ -324,7 +531,7 @@ function cargarPractica5(integrante) {
     const contenedorPrincipal = document.querySelector("#contenedorPractica");
     if (!contenedorPrincipal) return;
 
-    // 1. Inyectamos la estructura HTML usando tus estilos
+    // 1. Inyectamos la estructura HTML 
     contenedorPrincipal.innerHTML = `
         <div class="nota-card" style="grid-column: 1 / -1; border-left: 5px solid var(--primary-pink); padding: 20px;">
             <h2>Práctica 5 - Notas Rápidas (${integrante.toUpperCase()})</h2>

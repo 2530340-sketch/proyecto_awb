@@ -5,6 +5,35 @@ function guardar() {
 }
 
 
+let videos = {
+    video1: "https://www.youtube.com/embed/hEyqVsG0Fo8",
+    video2: "https://www.youtube.com/embed/bE1b2w0PZwQ",
+    video3: "https://www.youtube.com/embed/m2tdMHpU358",
+    video4: "https://www.youtube.com/embed/CiO6u0vm1aU",
+    video5: "https://www.youtube.com/embed/GHHRrQeI0IY",
+    video6: "https://www.youtube.com/embed/yqlzWsHKYxg",
+    video7: "https://www.youtube.com/embed/BKOfXZf2Lcg",
+    video8: "https://www.youtube.com/embed/s-Dw64w1hII"
+};
+
+document.querySelectorAll("#videos [data-video]").forEach(boton => {
+    boton.addEventListener("click", () => {
+        let enlace = videos[boton.dataset.video];
+
+        document.querySelector("#contenedorVideo").innerHTML = `
+            <iframe
+                src="${enlace}"
+                width="560"
+                height="315"
+                allowfullscreen>
+            </iframe>
+        `;
+    });
+});
+
+
+
+
 
 // ==========================================
 // logica para la practica 03 (agenda de contactos)
@@ -1890,13 +1919,17 @@ selectEstatus2.addEventListener("change", pintar);
 selectPrioridad2.addEventListener("change", pintar);
 
 function pintar() {
-
+    let totalActividades = actividad.length;
     let totalPendientes = actividad.filter(a => a.Estatus === "pendiente").length;
     let totalEnProgreso = actividad.filter(a => a.Estatus === "en progreso").length;
     let totalCompletadas = actividad.filter(a => a.Estatus === "completado").length;
 
     let divResultado = document.querySelector("#resultado");
     divResultado.innerHTML = `
+         <div class="tarjeta-indicador">
+            <span class="titulo-indicador">Total</span>
+            <span class="valor-indicador">${totalActividades}</span>
+        </div>
         <div class="tarjeta-indicador">
             <span class="titulo-indicador">Pendientes</span>
             <span class="valor-indicador">${totalPendientes}</span>
